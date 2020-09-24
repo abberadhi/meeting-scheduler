@@ -8,7 +8,6 @@ module.exports = {
     return user;
   },
 
-  // <GetEventsSnippet>
   getEvents: async function(accessToken) {
     const client = getAuthenticatedClient(accessToken);
   
