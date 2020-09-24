@@ -6,8 +6,7 @@ router.get('/', function(req, res, next) {
   let params = {
     active: { home: true }
   };
-  console.log(params);
-  console.log(req);
+
   res.render('index', params);
 });
 
