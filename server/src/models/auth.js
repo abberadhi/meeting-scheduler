@@ -1,5 +1,7 @@
 var passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
+var graph = require('./graph');
+
 
 // Configure passport
 
@@ -45,7 +47,7 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
 
   try{
     const user = await graph.getUserDetails(accessToken);
-
+    
     if (user) {
       // Add properties to profile
       profile['email'] = user.mail ? user.mail : user.userPrincipalName;
