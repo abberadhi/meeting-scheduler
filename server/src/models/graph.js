@@ -4,11 +4,41 @@ require('isomorphic-fetch');
 
 module.exports = {
   getUserDetails: async function(accessToken) {
-    await this.getUserPicture(accessToken);
+    // await this.getUserPicture(accessToken);
     const client = getAuthenticatedClient(accessToken);
-    const user = await client.api('/me').get();
+    // const user = await client.api('/me').get();
 
-    return user;
+
+
+    const batch = {
+      "requests": [
+          {
+              "url": "/me",
+              "method": "GET",
+              "id": "1",
+              "headers": {
+                  "Content-Type": "application/json"
+              }
+          },
+          {
+              "url": "/me/photo/$value",
+              "method": "GET",
+              "id": "2",
+              "headers": {
+                "Authorization": accessToken
+            }
+          }
+      ]
+  }
+
+  let result = await client.api('/$batch')
+    .version('beta')
+    .post(batch);
+
+    console.log("batch");
+    console.log(result['responses']);
+    
+    return result;
   },
 
   getUserPicture: async function(accessToken) {
@@ -21,17 +51,17 @@ module.exports = {
       console.log("here");
         let writeStream = fs.createWriteStream(`../server/avatars/test.png`); // Eg: test.pdf
         stream.pipe(writeStream).on("error", (err) => {
-          throw err;
+          console.log(err);
         });
         writeStream.on("finish", () => {
           console.log("Downloaded profile picture");
         });
         writeStream.on("error", (err) => {
-          throw err;
+          console.log(err);
         });
       })
       .catch((error) => {
-        throw error;
+        console.log(error);
       });
     
     console.log("photo", photo)

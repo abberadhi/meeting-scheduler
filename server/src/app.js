@@ -9,7 +9,7 @@ const app = require('./middlewares/mw')(express());
 require('./models/auth');
 
 var authRouter = require('./controllers/auth');
-var indexRouter = require('./index');
+var indexRouter = require('./controllers/index');
 
 app.use('/auth', authRouter);
 app.use('/', indexRouter);
