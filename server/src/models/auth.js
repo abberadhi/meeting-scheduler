@@ -1,6 +1,7 @@
 var passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 var graph = require('./graph');
+var fs = require('fs');
 
 
 // Configure passport
@@ -46,8 +47,17 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
   }
 
   try{
-    const user = await graph.getUserDetails(accessToken);
-    
+    const data = await graph.getUserDetails(accessToken);
+
+    const user = data['responses'][0]['body'];
+
+    // If image exists, save it.
+    const image = data['responses'][1];
+    console.log(image);
+    if (image.status == 200) {
+      savePicture(user.id, data['responses'][1]['body'])
+    }
+
     if (user) {
       // Add properties to profile
       profile['email'] = user.mail ? user.mail : user.userPrincipalName;
@@ -80,3 +90,11 @@ passport.use(new OIDCStrategy(
   },
   signInComplete
 ));
+
+let savePicture = (id, base64Image) => {
+  console.log([id, base64Image]);
+  fs.writeFile(`../server/avatars/${id}.png`, base64Image, {encoding: 'base64'}, function(err) {
+    console.log('File created');
+    console.log(err);
+});
+}

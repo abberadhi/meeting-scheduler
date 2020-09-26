@@ -21,7 +21,7 @@ module.exports = {
               }
           },
           {
-              "url": "/me/photo/$value",
+              "url": "/me/photos/48x48/$value",
               "method": "GET",
               "id": "2",
               "headers": {
@@ -35,37 +35,8 @@ module.exports = {
     .version('beta')
     .post(batch);
 
-    console.log("batch");
-    console.log(result['responses']);
     
     return result;
-  },
-
-  getUserPicture: async function(accessToken) {
-    const client = getAuthenticatedClient(accessToken);
-    const photo = await client
-    .api('/me/photo/$value')
-    .version('beta')
-    .getStream()
-    .then((stream) => {
-      console.log("here");
-        let writeStream = fs.createWriteStream(`../server/avatars/test.png`); // Eg: test.pdf
-        stream.pipe(writeStream).on("error", (err) => {
-          console.log(err);
-        });
-        writeStream.on("finish", () => {
-          console.log("Downloaded profile picture");
-        });
-        writeStream.on("error", (err) => {
-          console.log(err);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    
-    console.log("photo", photo)
-    // return photo;
   },
 
   getEvents: async function(accessToken) {
