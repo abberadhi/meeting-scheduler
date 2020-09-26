@@ -2,6 +2,7 @@ var graph = require('@microsoft/microsoft-graph-client');
 const fs = require('fs');
 require('isomorphic-fetch');
 
+
 module.exports = {
   getUserDetails: async function(accessToken) {
     // await this.getUserPicture(accessToken);

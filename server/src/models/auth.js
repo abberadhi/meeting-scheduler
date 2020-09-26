@@ -2,7 +2,7 @@ var passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 var graph = require('./graph');
 var fs = require('fs');
-
+const resizeImg = require('resize-img');
 
 // Configure passport
 
@@ -55,7 +55,7 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
     const image = data['responses'][1];
     console.log(image);
     if (image.status == 200) {
-      savePicture(user.id, data['responses'][1]['body'])
+      savePicture(user.id, image['body'])
     }
 
     if (user) {
@@ -91,10 +91,22 @@ passport.use(new OIDCStrategy(
   signInComplete
 ));
 
-let savePicture = (id, base64Image) => {
-  console.log([id, base64Image]);
-  fs.writeFile(`../server/avatars/${id}.png`, base64Image, {encoding: 'base64'}, function(err) {
+let savePicture = async (id, base64Image) => {
+  // console.log([id, base64Image]);
+
+  const imageBufferData = Buffer.from(base64Image, `base64`)
+  const image = await resizeImg(imageBufferData, {
+    width: 64,
+    height: 64
+  });
+
+  console.log(image);
+
+  fs.writeFile(`../server/avatars/${id}.png`, image, function(err) {
     console.log('File created');
     console.log(err);
-});
-}
+  });
+  // fs.writeFile(`../server/avatars/${id}.png`, base64Image, {encoding: 'base64'}, function(err) {
+  //   console.log('File created');
+  //   console.log(err);
+};
