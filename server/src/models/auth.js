@@ -3,6 +3,7 @@ var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 var graph = require('./graph');
 var fs = require('fs');
 const resizeImg = require('resize-img');
+const userModel = require('./database/user');
 
 // Configure passport
 
@@ -41,6 +42,8 @@ const oauth2 = require('simple-oauth2').create({
 // Callback function called once the sign-in is complete
 // and an access token has been obtained
 // <SignInCompleteSnippet>
+// TODO
+// CHECK IF USER IS REGISTERED, OTHERWISE REGISTER THEM
 async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
   if (!profile.oid) {
     return done(new Error("No OID found in user profile."));
@@ -49,11 +52,11 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
   try{
     const data = await graph.getUserDetails(accessToken);
 
+    
     const user = data['responses'][0]['body'];
 
     // If image exists, save it.
     const image = data['responses'][1];
-    console.log(image);
     if (image.status == 200) {
       savePicture(user.id, image['body'])
     }
@@ -61,6 +64,13 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
     if (user) {
       // Add properties to profile
       profile['email'] = user.mail ? user.mail : user.userPrincipalName;
+
+      // add user to database if they don't exist
+      if (!await userModel.userExists(user.id)) {
+        await userModel.registerUser(user.id, user.displayName, profile['email']);
+        console.log("User " + user.displayName + " created");
+      }
+
     }
   } catch (err) {
     return done(err);
@@ -92,21 +102,15 @@ passport.use(new OIDCStrategy(
 ));
 
 let savePicture = async (id, base64Image) => {
-  // console.log([id, base64Image]);
-
   const imageBufferData = Buffer.from(base64Image, `base64`)
   const image = await resizeImg(imageBufferData, {
     width: 64,
     height: 64
   });
 
-  console.log(image);
 
   fs.writeFile(`../server/avatars/${id}.png`, image, function(err) {
     console.log('File created');
     console.log(err);
   });
-  // fs.writeFile(`../server/avatars/${id}.png`, base64Image, {encoding: 'base64'}, function(err) {
-  //   console.log('File created');
-  //   console.log(err);
 };

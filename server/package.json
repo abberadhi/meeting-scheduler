@@ -28,6 +28,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "passport-azure-ad": "^4.2.1",
+    "promise-mysql": "^4.1.3",
     "resize-img": "^2.0.0",
     "simple-oauth2": "^3.4.0"
   },
