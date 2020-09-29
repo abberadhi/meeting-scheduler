@@ -2,8 +2,10 @@ var passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 var graph = require('./graph');
 var fs = require('fs');
+const bcrypt = require('bcrypt'); // not used
 const resizeImg = require('resize-img');
 const userModel = require('./database/user');
+const { json } = require('body-parser');
 
 // Configure passport
 
@@ -14,14 +16,23 @@ var users = {};
 
 // Passport calls serializeUser and deserializeUser to
 // manage users
-passport.serializeUser(function(user, done) {
-  // Use the OID property of the user as a key
+passport.serializeUser(async function(user, done) {
+
   users[user.profile.oid] = user;
+
+  await userModel.updateRawUser(user.profile.oid, JSON.stringify(user));
+
+
   done(null, user.profile.oid);
+  // done(null, user.profile.oid);
 });
 
-passport.deserializeUser(function(id, done) {
-  done(null, users[id]);
+passport.deserializeUser(async function(id, done) {
+
+  let res = await userModel.getRawUser(id);
+
+  done(null, JSON.parse(res.stringifiedData));
+  // done(null, users[id]);
 });
 
 // <ConfigureOAuth2Snippet>
@@ -42,8 +53,6 @@ const oauth2 = require('simple-oauth2').create({
 // Callback function called once the sign-in is complete
 // and an access token has been obtained
 // <SignInCompleteSnippet>
-// TODO
-// CHECK IF USER IS REGISTERED, OTHERWISE REGISTER THEM
 async function signInComplete(iss, sub, profile, accessToken, refreshToken, params, done) {
   if (!profile.oid) {
     return done(new Error("No OID found in user profile."));
@@ -52,13 +61,17 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
   try{
     const data = await graph.getUserDetails(accessToken);
 
+    const raw = {
+      "profile": profile,
+      "oauthToken": accessToken
+    }
     
     const user = data['responses'][0]['body'];
 
     // If image exists, save it.
     const image = data['responses'][1];
     if (image.status == 200) {
-      savePicture(user.id, image['body'])
+      savePicture(profile.oid, image['body'])
     }
 
     if (user) {
@@ -66,9 +79,9 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
       profile['email'] = user.mail ? user.mail : user.userPrincipalName;
 
       // add user to database if they don't exist
-      if (!await userModel.userExists(user.id)) {
-        await userModel.registerUser(user.id, user.displayName, profile['email']);
-        console.log("User " + user.displayName + " created");
+      if (!await userModel.userExists(profile.oid)) {
+        await userModel.registerUser(profile.oid, profile.displayName, profile['email']);
+        console.log("User " + profile.displayName + " created");
       }
 
     }
@@ -101,6 +114,8 @@ passport.use(new OIDCStrategy(
   signInComplete
 ));
 
+// gets id and image in base64 format
+// resizes image and saves id with user id as name
 let savePicture = async (id, base64Image) => {
   const imageBufferData = Buffer.from(base64Image, `base64`)
   const image = await resizeImg(imageBufferData, {

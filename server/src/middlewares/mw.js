@@ -21,8 +21,6 @@ module.exports = (app) => {
 
 
     // Session middleware
-    // NOTE: Uses default in-memory session store, which is not
-    // suitable for production
     app.use(session({
         secret: 'your_secret_value_here',
         resave: false,
@@ -48,8 +46,6 @@ module.exports = (app) => {
     
         next();
     });
-
-
 
     // view engine setup
     app.set('views', path.join(__dirname, '../views'));
