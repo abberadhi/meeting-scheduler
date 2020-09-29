@@ -124,7 +124,7 @@ let savePicture = async (id, base64Image) => {
   });
 
 
-  fs.writeFile(`../server/avatars/${id}.png`, image, function(err) {
+  fs.writeFile(`../server/src/public/avatars/${id}.png`, image, function(err) {
     console.log('File created');
     console.log(err);
   });

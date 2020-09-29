@@ -10,6 +10,7 @@ var session = require('express-session');
 var path = require('path');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
+var fs = require('fs');
 
 var passport = require('passport');
 
@@ -72,6 +73,14 @@ module.exports = (app) => {
         // template locals
         if (req.user) {
           res.locals.user = req.user.profile;
+
+          // check if user has profile picture
+          fs.access(`../server/src/public/avatars/${req.user.profile.oid}.png`, fs.F_OK, (err) => {
+            if (!err) {
+                // attach true on template locals
+                res.locals.user.avatar = `avatars/${req.user.profile.oid}.png`;
+            }
+          })
         }
         next();
       });
