@@ -5,7 +5,9 @@
       <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
     <link rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -16,10 +18,10 @@
   </head>
 
   <body>
-<div class="container">
+<div class="container nav-border">
         <header class="head my-3">
             <nav class="navbar navbar-expand-lg navbar-light head__custom-nav">
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" href="/">
                     {{!-- <img src="assets/logo.png" alt="website logo"> --}}
                     <span>Meet X</span>
                 </a>
@@ -28,20 +30,21 @@
                     <i class="fa fa-bars fa-lg align-self-center mr-2" style="width: 32px;"></i>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Work</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Info</a>
+                            <a class="nav-link" href="/">Home</a>
                         </li>
                         {{#if user}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/meetings">Meetings</a>
+                        </li>
+                        {{!-- <li class="nav-item">
+                            <a class="nav-link" href="#">
+                              <span class="fa-layers fa-fw">
+                              <i class="fas fa-bell"></i>
+                              <span class="fa-layers-counter">1,419</span>
+                          </span></a>
+                        </li> --}}
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                             aria-expanded="false">
@@ -50,12 +53,15 @@
                             {{else}}
                               <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2" style="width: 32px;"></i>
                             {{/if}}
+                            {{user.displayName}}
                           </a>
                           <div class="dropdown-menu dropdown-menu-right">
                             <h5 class="dropdown-item-text mb-0">{{ user.displayName }}</h5>
                             <p class="dropdown-item-text text-muted mb-0">{{ user.email }}</p>
                             <div class="dropdown-divider"></div>
-                            <a href="/auth/signout" class="dropdown-item">Sign Out</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/auth/signout" style="color: red;" class="dropdown-item">Sign Out</a>
                           </div>
                         </li>
                         {{else}}
@@ -68,7 +74,7 @@
             </nav>
         </header>
     </div>
-    
+
       {{#each error}}
         <div class="alert alert-danger" role="alert">
           <p class="mb-3">{{ this.message }}</p>

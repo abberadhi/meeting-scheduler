@@ -9,9 +9,6 @@ const { json } = require('body-parser');
 
 // Configure passport
 
-// In-memory storage of logged-in users
-// For demo purposes only, production apps should store
-// this in a reliable storage
 var users = {};
 
 // Passport calls serializeUser and deserializeUser to
@@ -20,7 +17,7 @@ passport.serializeUser(async function(user, done) {
 
   users[user.profile.oid] = user;
 
-  await userModel.updateRawUser(user.profile.oid, JSON.stringify(user));
+  // await userModel.updateRawUser(user.profile.oid, JSON.stringify(user));
 
 
   done(null, user.profile.oid);
@@ -29,10 +26,10 @@ passport.serializeUser(async function(user, done) {
 
 passport.deserializeUser(async function(id, done) {
 
-  let res = await userModel.getRawUser(id);
+  // let res = await userModel.getRawUser(id);
 
-  done(null, JSON.parse(res.stringifiedData));
-  // done(null, users[id]);
+  // done(null, JSON.parse(res.stringifiedData));
+  done(null, users[id]);
 });
 
 // <ConfigureOAuth2Snippet>

@@ -86,6 +86,7 @@ header.outer-container {
 
 .custom-section .col-lg-4 p {
 	/* color: #000; */
+	text-shadow: 2px 2px 5px black;
 	font-size: 14px;
 	margin-top: 30px;
 }
@@ -112,10 +113,17 @@ header.outer-container {
 	position: absolute;
 	top: -14rem;
 	right: -11%;
+	-webkit-filter: drop-shadow(12px 12px 25px rgba(0,0,0,1));
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
 }
 
 .dropdown {
   transition: all 2s;
+}
+
+.nav-border {
+	border-bottom: solid #ccc 1px;
 }
 
 #myVideo {
@@ -124,6 +132,25 @@ header.outer-container {
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
+}
+
+.addMeeting {
+	margin: 0.5em;
+    padding: 0.5em;
+	display: block;
+	text-align: center;
+    background-color: rgba(60, 60, 255);
+    color: white;
+    border-radius: 10px;
+}
+
+.meeting-list {
+	width: 100%;
+	margin-top: 1em;
+	background-color: rgba(255, 144, 144);
+	padding: 1em;
+	border-radius: 0px 10px 0px 10px;
+	box-shadow: 2px 2px 8px #888888;
 }
 
 @media screen and (max-width: 991.98px) {

@@ -1,0 +1,52 @@
+<div style="margin-top: 5em;" class="container">
+<div class="row">
+  <div style="overflow: auto;" class="col-sm-3">
+    <a href="#" class="addMeeting align-items-center"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
+    <hr>
+    <h2>Upcoming meetings</h2>
+    <div class="meeting-list">
+      <h4>Title</h4>
+      <p>Date & time</p>
+    </div>
+
+  </div>
+    <div class="col-sm-9">
+    <div class="row d-flex align-items-center">
+      <div class="col-12 col-lg-8">
+          <h3>Scheduling. Made. Easy.</h3>
+          <p>Welcome to Meet X! A service made to make your life a tiny bit easier.</p>
+            {{#unless user}}
+              <a href="/auth/signin"><i class="fa fa-windows fa-lg" aria-hidden="true"></i> Sign in with Microsoft</a>
+            {{/unless}}
+      </div>
+      <div class="col-12 col-lg-4">
+          <img src="assets/graphic/mainbannertransparent.png" alt="banner">
+      </div>
+
+    </div>
+     <h1>Calendar</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Organizer</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each events}}
+            <tr>
+              <td>{{this.organizer.emailAddress.name}}</td>
+              <td>{{this.subject}}</td>
+              <td>{{eventDateTime this.start.dateTime}}</td>
+              <td>{{eventDateTime this.end.dateTime}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>  
+  </div>
+</div>
+
+
+</div>
