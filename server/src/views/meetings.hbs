@@ -1,6 +1,32 @@
+
+<link href='js/calendar/main.css' rel='stylesheet' />
+<script src='js/calendar/main.js'></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      themeSystem: 'bootstrap',
+        events: [
+        {{#each events}}
+        {
+          title: '{{this.subject}}', // a property!
+          start: '{{eventDateTime this.start.dateTime}}', // a property!
+          end: '{{eventDateTime this.end.dateTime}}', // a property! ** see important note below about 'end' **
+          color: 'yellow',
+          url: '/meetings'
+        },
+        {{/each}}
+  ]
+    });
+    calendar.render();
+  });
+
+</script>
 <div style="margin-top: 5em;" class="container">
 <div class="row">
-  <div style="overflow: auto;" class="col-sm-3">
+  <div class="col-sm-3">
     <a href="#" class="addMeeting align-items-center"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
     <hr>
     <h2>Upcoming meetings</h2>
@@ -24,7 +50,7 @@
       </div>
 
     </div>
-     <h1>Calendar</h1>
+     {{!-- <h1>Calendar</h1>
       <table class="table">
         <thead>
           <tr>
@@ -44,7 +70,8 @@
             </tr>
           {{/each}}
         </tbody>
-      </table>  
+      </table>   --}}
+      <div id='calendar'></div>
   </div>
 </div>
 

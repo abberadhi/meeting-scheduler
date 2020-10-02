@@ -56,7 +56,9 @@ module.exports = (app) => {
     var moment = require('moment');
     // Helper to format date/time sent by Graph
     hbs.registerHelper('eventDateTime', function(dateTime){
-        return moment(dateTime).format('M/D/YY h:mm A');
+        console.log(dateTime);
+        return moment(dateTime).format('YYYY-MM-DD');
+        // return moment(dateTime).format('M/D/YY h:mm A');
     });
 
     app.use(express.json());

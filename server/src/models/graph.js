@@ -47,6 +47,7 @@ module.exports = {
       .api('/me/events')
       .select('subject,organizer,start,end')
       .orderby('createdDateTime DESC')
+      .top(20)
       .get();
 
     return events;
