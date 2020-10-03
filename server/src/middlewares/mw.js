@@ -77,16 +77,16 @@ module.exports = (app) => {
           res.locals.user = req.user.profile;
 
           // check if user has profile picture
-          try {
-            fs.access(`../server/src/public/avatars/${req.user.profile.oid}.png`, fs.F_OK, (err) => {
-                if (!err) {
-                    // attach true on template locals
-                    res.locals.user.avatar = `avatars/${req.user.profile.oid}.png`;
+          fs.access(`../server/src/public/avatars/${req.user.profile.oid}.png`, fs.F_OK, (err) => {
+              if (!err) {
+                  // attach true on template locals
+                    try {
+                        res.locals.user.avatar = `avatars/${req.user.profile.oid}.png`;
+                    } catch (error) {
+                        console.log("Error has occured: ", error);
+                    }
                 }
             })
-          } catch (error) {
-              console.log("Error has occured: ", error);
-          }
         }
         next();
       });
