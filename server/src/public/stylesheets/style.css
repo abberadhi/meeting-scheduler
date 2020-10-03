@@ -155,7 +155,7 @@ header.outer-container {
 	background-color: #add9ff;
 	padding: 1em;
 	border-radius: 0px 10px 0px 10px;
-	/* box-shadow: 1px 1px 3px #888888; */
+	border: 1px solid #ccc;
 }
 
 #calendar {
@@ -180,6 +180,10 @@ header.outer-container {
 
   .custom-section {
     padding: 5em 0;
+  }
+
+  .spacing-1em {
+	margin-top: 3em;
   }
 }
 
