@@ -11,10 +11,10 @@
         events: [
         {{#each events}}
         {
-          title: '{{this.subject}}', // a property!
-          start: '{{eventDateTime this.start.dateTime}}', // a property!
-          end: '{{eventDateTime this.end.dateTime}}', // a property! ** see important note below about 'end' **
-          color: 'yellow',
+          title: '{{this.subject}}',
+          start: '{{eventDateTime this.start.dateTime}}',
+          end: '{{eventDateTime this.end.dateTime}}',
+          color: '#add8e6',
           url: '/meetings'
         },
         {{/each}}
@@ -27,7 +27,7 @@
 <div style="margin-top: 5em;" class="container">
 <div class="row">
   <div class="col-sm-3">
-    <a href="#" class="addMeeting align-items-center"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
+    <a href="#" class="addMeeting btn btn-primary"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
     <hr>
     <h2>Upcoming meetings</h2>
     <div class="meeting-list">
@@ -37,13 +37,10 @@
 
   </div>
     <div class="col-sm-9">
-    <div class="row d-flex align-items-center">
+    <div class="row d-flex align-items-center head-meetings">
       <div class="col-12 col-lg-8">
           <h3>Scheduling. Made. Easy.</h3>
           <p>Welcome to Meet X! A service made to make your life a tiny bit easier.</p>
-            {{#unless user}}
-              <a href="/auth/signin"><i class="fa fa-windows fa-lg" aria-hidden="true"></i> Sign in with Microsoft</a>
-            {{/unless}}
       </div>
       <div class="col-12 col-lg-4">
           <img src="assets/graphic/mainbannertransparent.png" alt="banner">

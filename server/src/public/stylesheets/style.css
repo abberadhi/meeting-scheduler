@@ -8,10 +8,18 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: #fff;
   overflow-x: hidden;
+  padding-bottom: 3em;
 }
 
 img {
   max-width: 100%;
+}
+
+.head-meetings {
+	padding: 1em;
+	margin: 0;
+    background-color: aliceblue;
+    border-radius: 0 10px 0 10px;
 }
 
 .head__custom-nav .navbar-brand img {
@@ -135,22 +143,23 @@ header.outer-container {
 }
 
 .addMeeting {
-	margin: 0.5em;
     padding: 0.5em;
 	display: block;
 	text-align: center;
-    background-color: rgba(60, 60, 255);
-    color: white;
     border-radius: 10px;
 }
 
 .meeting-list {
 	width: 100%;
 	margin-top: 1em;
-	background-color: rgba(255, 144, 144);
+	background-color: #add9ff;
 	padding: 1em;
 	border-radius: 0px 10px 0px 10px;
-	box-shadow: 2px 2px 8px #888888;
+	/* box-shadow: 1px 1px 3px #888888; */
+}
+
+#calendar {
+	margin-top: 3em;
 }
 
 @media screen and (max-width: 991.98px) {
