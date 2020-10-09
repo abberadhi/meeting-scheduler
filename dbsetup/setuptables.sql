@@ -49,7 +49,8 @@ CREATE TABLE pollChoice (
     id int NOT NULL AUTO_INCREMENT,
     meeting_id int,
     added_by VARCHAR(255),
-    meeting_date DATETIME,
+    meeting_date_start DATETIME,
+    meeting_date_end DATETIME,
     final TINYINT(1),
 
     FOREIGN KEY(added_by)
