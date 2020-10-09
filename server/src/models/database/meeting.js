@@ -24,35 +24,5 @@ module.exports = {
         let res = await db.query(sql, [email]);
 
         return res[0];
-    },
-    
-    "getUserById": async (id) => {
-        let sql = `
-        SELECT * FROM users WHERE id = ?`;
-    
-        let res = await db.query(sql, [id]);   
-
-        return res[0];
-    },
-
-    "updateRawUser": async (id, stringifiedData) => {
-        let sql = `
-        UPDATE rawUsers 
-        SET 
-            stringifiedData = ?
-        WHERE
-            id = ?;`;
-        // add user
-        await db.query(sql, [stringifiedData, id]);
-    },
-
-    "getRawUser": async (id) => {
-        let sql = `
-        SELECT * from rawUsers WHERE id = ?`;
-
-        // get raw user data
-        let res = await db.query(sql, [id]);
-
-        return res[0];
     }
 }
