@@ -55,7 +55,8 @@ router.get('/',
 /* GET /meetings/create */
 router.get('/create',
   async function(req, res) {
-    if (!req.isAuthenticated()) {
+    // if (!req.isAuthenticated()) {
+    if (false) {
       // Redirect unauthenticated requests to home page
       res.locals.message = 'Access forbidden: You have to log in first!';
       res.redirect('/')

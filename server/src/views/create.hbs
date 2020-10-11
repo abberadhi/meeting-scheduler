@@ -1,55 +1,153 @@
 
-<link href='js/calendar/main.css' rel='stylesheet' />
-<script src='js/calendar/main.js'></script>
 <script>
+  let dateListContainer;
+  let newDateButton;
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      themeSystem: 'bootstrap',
-        events: [
-        {{#each events}}
-        {
-          title: '{{this.subject}}',
-          start: '{{eventDateTime this.start.dateTime}}',
-          end: '{{eventDateTime this.end.dateTime}}',
-          color: '#add8e6',
-          url: '/meetings'
-        },
-        {{/each}}
-  ]
-    });
-    calendar.render();
-  });
+  window.onload = function() {
+    dateListContainer = document.getElementById("date-list");
+    newDateButton = document.getElementById("newDateButton");
+
+    newDateButton.addEventListener('click', function(btn) {
+      let nextNumber = dateListContainer.childElementCount;
+
+
+      //add new field
+      dateListContainer.innerHTML += `<div id="schedule" class="schedule form-group row align-items-center">
+            <div class="col-1"><p>#${nextNumber+1}</p></div>
+            <div class="col-9">
+              <label for="meeting-date-${nextNumber}">Date:</label>
+              <br>
+              <input type="date" id="meeting-date-${nextNumber}"
+                name="meeting-date-${nextNumber}">
+              <br>
+              <br>
+              <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <label for="meeting-time-start-${nextNumber}">Starts:</label>
+                    <br>
+                    <input type="time" id="meeting-time-start-${nextNumber}"
+                      name="meeting-time-start-${nextNumber}">
+                    <br>
+                </div>
+                <div class="col-sm-6">
+                    <label for="meeting-time-end-${nextNumber}">Ends:</label>
+                    <br>
+                    <input type="time" id="meeting-time-end-${nextNumber}"
+                      name="meeting-time-end-${nextNumber}">
+                </div>
+              </div>
+              </div>
+            <div class="col-1"><button onclick="removeScheduledTime(this)" type="button" class="btn btn-danger">X</button></div>
+          </div>`;
+    }); 
+
+    console.log(dateListContainer.childElementCount);
+  }
+
+  function handleClick(cb) {
+    if (!cb.checked && dateListContainer.childElementCount > 1) {
+      alert("Please remove added dates first!");
+      cb.checked = true;
+      return;
+    }
+    newDateButton.disabled = !cb.checked;
+  }
+
+  function removeScheduledTime(scheduledDate) {
+    // Finds the element and removes it
+
+    let elem = scheduledDate.parentNode.parentNode;
+    let parent = elem.parentNode;
+
+    parent.removeChild(elem);
+
+
+    // Reassign values to make the dates in numerical order
+    let el = document.getElementsByClassName('schedule');
+    console.log(el);
+
+    for (let i = 0; i < el.length; i++) {
+      currentElement = el[i];
+      console.log(currentElement.childNodes[3].children[2]);
+      
+      currentElement.childNodes[3].children[2].setAttribute("name", `meeting-date-${i+1}`);
+      currentElement.children[1].children[5].children[0].children[2].setAttribute("name", `meeting-time-start-${i+1}`);
+      currentElement.children[1].children[5].children[1].children[2].setAttribute("name", `meeting-time-end-${i+1}`);
+      currentElement.children[0].children[0].innerHTML = `#${i+2}`;
+    }
+    
+
+  }
 
 </script>
 <div style="margin-top: 5em;" class="container">
 <div class="row">
-  <div class="col-md-3">
-    <a href="#" class="addMeeting btn btn-primary"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
-    <hr>
-    <h5>Upcoming meetings</h5>
-    <div class="meeting-list">
-      <h4>Title</h4>
-      <p>Date & time</p>
-    </div>
-
-  </div>
-    <div class="col-md-9 spacing-1em">
-    <div class="row d-flex align-items-center head-meetings">
-      <div class="col-12 col-lg-8">
-          <h3>Welcome to your meetings page.</h3>
-          <p>Here you can see, manage and create meetings.</p>
-      </div>
-      <div class="col-12 col-lg-4">
-          <img src="/assets/graphic/schedule_undraw.png" alt="banner">
-      </div>
-
-    </div>
-      <div id='calendar'></div>
-  </div>
-</div>
-
-
+   <div class="col-md-12">
+      <h1>Organize a meeting</h1>
+      <br>
+      <form method="POST">
+         <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" name="title" class="form-control" id="title" autocomplete="off" placeholder="Title of your meeting">
+         </div>
+         <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="descriptopn" class="form-control" id="description" rows="3"></textarea>
+         </div>
+         <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" name="location" class="form-control" id="location" autocomplete="off" placeholder="A place or link.">
+         </div>
+         <hr>
+         <h4>
+           Date and time
+         </h4>
+         <br>
+          <div class="form-group">
+            <div class="row align-items-center">
+              <div class="col-9">
+                <label for="">Enable poll voting (multiple choices)</label>
+              </div>
+              <div class="col-2 text-center">
+                <label class="switch">
+                  <input onclick="handleClick(this)" type="checkbox" id="voting">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        <div class="date-list" id="date-list">
+          <div id="schedule" class="form-group row align-items-center">
+            <div class="col-1"><p>#1</p></div>
+            <div class="col-9">
+              <label for="meeting-date-0">Date:</label>
+              <br>
+              <input type="date" id="meeting-date-0"
+                name="meeting-date-0">
+              <br>
+              <br>
+              <div class="row align-items-center">
+                <div class="col-sm-6">
+                    <label for="meeting-time-start-0">Starts:</label>
+                    <br>
+                    <input type="time" id="meeting-time-start-0"
+                      name="meeting-time-start-0">
+                    <br>
+                </div>
+                <div class="col-sm-6">
+                    <label for="meeting-time-end-0">Ends:</label>
+                    <br>
+                    <input type="time" id="meeting-time-end-0"
+                      name="meeting-time-end-0">
+                </div>
+              </div>
+              </div>
+            {{!-- <div class="col-1"><button type="button" class="btn btn-danger">X</button></div> --}}
+          </div>
+         </div>
+          <div class="text-right">
+            <button id="newDateButton" type="button" class="btn-info btn align-items-center" disabled><i class="fa fa-plus fa-lg align-self-center mr-2"></i>Add Date & Time</button>
+          </div>
+      </form>
+   </div>
 </div>
