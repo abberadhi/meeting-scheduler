@@ -1,84 +1,131 @@
-
 <script>
-  let dateListContainer;
-  let newDateButton;
-
-  window.onload = function() {
+   let dateListContainer;
+   let newDateButton;
+   let newAttendeeButton;
+   let attendeeList;
+   let attendeesTitle;
+   let attendeeCount;
+   let submitButton;
+   
+   window.onload = function() {
     dateListContainer = document.getElementById("date-list");
+    attandeListcontainer = document.getElementById("attendeeList");
     newDateButton = document.getElementById("newDateButton");
+    newAttendeeButton = document.getElementById("newAttendeeButton");
+    attandeesTitle = document.getElementById('attendeesTitle');
+    attendeeList = document.getElementById('attendeeList');
+    submitButton = document.getElementById('submitButton');
+
+    submitButton.addEventListener('click', function() {
+      let form = document.getElementsByTagName("form")[0];
+      if (attendeeCount > 0) {
+        if (form.checkValidity()) {
+          form.submit();
+        } else {
+          alert("oops! Something doesn't meet the criteria.");
+        }
+      } else {
+        alert("Please add at least one attendee.");
+      }
+    })
 
     newDateButton.addEventListener('click', function(btn) {
+
       let nextNumber = dateListContainer.childElementCount;
 
+      
 
       //add new field
-      dateListContainer.innerHTML += `<div id="schedule" class="schedule form-group row align-items-center">
+      dateListContainer.insertAdjacentHTML('beforeend', `<div id="schedule" class="schedule form-group row align-items-center">
             <div class="col-1"><p>#${nextNumber+1}</p></div>
             <div class="col-9">
-              <label for="meeting-date-${nextNumber}">Date:</label>
+              <label for="meetingDate">Date:</label>
               <br>
-              <input type="date" id="meeting-date-${nextNumber}"
-                name="meeting-date-${nextNumber}">
+              <input type="date" id="meetingDate"
+                name="meetingDate">
               <br>
               <br>
               <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <label for="meeting-time-start-${nextNumber}">Starts:</label>
+                    <label for="meetingTimeStart">Starts:</label>
                     <br>
-                    <input type="time" id="meeting-time-start-${nextNumber}"
-                      name="meeting-time-start-${nextNumber}">
+                    <input type="time" id="meetingTimeStart"
+                      name="meetingTimeStart">
                     <br>
                 </div>
                 <div class="col-sm-6">
-                    <label for="meeting-time-end-${nextNumber}">Ends:</label>
+                    <label for="meetingTimeEnd">Ends:</label>
                     <br>
-                    <input type="time" id="meeting-time-end-${nextNumber}"
-                      name="meeting-time-end-${nextNumber}">
+                    <input type="time" id="meetingTimeEnd"
+                      name="meetingTimeEnd">
                 </div>
               </div>
               </div>
             <div class="col-1"><button onclick="removeScheduledTime(this)" type="button" class="btn btn-danger">X</button></div>
-          </div>`;
+          </div>`);
+  
+      let schedules = document.getElementsByClassName('schedule');
+      console.log(schedules);
+      schedules[schedules.length-1].style.opacity = 0;
+  
+      setTimeout(function() {
+        schedules[schedules.length-1].style.opacity = 1;
+      }, 50);
     }); 
 
-    console.log(dateListContainer.childElementCount);
-  }
+     newAttendeeButton.addEventListener('click', function() {
+      let inputF = document.getElementById('newAttendee');
 
-  function handleClick(cb) {
-    if (!cb.checked && dateListContainer.childElementCount > 1) {
-      alert("Please remove added dates first!");
-      cb.checked = true;
-      return;
-    }
-    newDateButton.disabled = !cb.checked;
-  }
+      if (!inputF.value || !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(inputF.value))) {
+        alert("This Email is not valid!");
+        return;
+      }
 
-  function removeScheduledTime(scheduledDate) {
-    // Finds the element and removes it
-
-    let elem = scheduledDate.parentNode.parentNode;
-    let parent = elem.parentNode;
-
-    parent.removeChild(elem);
+      attendeeCount = attendeeList.childElementCount+1;
+      attandeesTitle.innerHTML = `Attandees (${attendeeCount})`;
 
 
-    // Reassign values to make the dates in numerical order
-    let el = document.getElementsByClassName('schedule');
-    console.log(el);
+       attandeListcontainer.insertAdjacentHTML('beforeend', `
+            <div id="attendee" class="form-group row align-items-center">
+        <div class="col-1">
+        <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="col-9">
+            <input type="text"
+              class="attendee" name="attendee" value="${inputF.value}" readonly>
+            <br>
+        </div>
+        <div class="col-1">
+          <button onclick="removeScheduledTime(this)" type="button" class="btn btn-danger">X</button>
+        </div>
+      </div>`);
 
-    for (let i = 0; i < el.length; i++) {
-      currentElement = el[i];
-      console.log(currentElement.childNodes[3].children[2]);
-      
-      currentElement.childNodes[3].children[2].setAttribute("name", `meeting-date-${i+1}`);
-      currentElement.children[1].children[5].children[0].children[2].setAttribute("name", `meeting-time-start-${i+1}`);
-      currentElement.children[1].children[5].children[1].children[2].setAttribute("name", `meeting-time-end-${i+1}`);
-      currentElement.children[0].children[0].innerHTML = `#${i+2}`;
-    }
-    
-
-  }
-
+      inputF.value = "";
+     });
+   
+     console.log(dateListContainer.childElementCount);
+   
+   }
+   
+   function handleClick(cb) {
+     if (!cb.checked && dateListContainer.childElementCount > 1) {
+       alert("Please remove added dates first!");
+       cb.checked = true;
+       return;
+     }
+     newDateButton.disabled = !cb.checked;
+   }
+   
+   function removeScheduledTime(scheduledDate) {
+     // Finds the element and removes it
+     let elem = scheduledDate.parentNode.parentNode;
+     let parent = elem.parentNode;
+  
+     parent.removeChild(elem);
+      let count = attendeeList.childElementCount;
+      attandeesTitle.innerHTML = `Attandees (${attendeeCount})`;
+   }
+   
 </script>
 <div style="margin-top: 5em;" class="container">
 <div class="row">
@@ -88,66 +135,89 @@
       <form method="POST">
          <div class="form-group">
             <label for="title">Title:</label>
-            <input type="text" name="title" class="form-control" id="title" autocomplete="off" placeholder="Title of your meeting">
+            <input type="text" name="title" class="form-control" id="title" autocomplete="off" placeholder="Title of your meeting" required>
          </div>
          <div class="form-group">
             <label for="description">Description</label>
-            <textarea name="descriptopn" class="form-control" id="description" rows="3"></textarea>
+            <textarea name="descriptopn" class="form-control" id="description" rows="3" required></textarea>
          </div>
          <div class="form-group">
             <label for="location">Location:</label>
-            <input type="text" name="location" class="form-control" id="location" autocomplete="off" placeholder="A place or link.">
+            <input type="text" name="location" class="form-control" id="location" autocomplete="off" placeholder="A place or link." required>
          </div>
          <hr>
          <h4>
-           Date and time
+            Date and time
          </h4>
          <br>
-          <div class="form-group">
+         <div class="form-group">
             <div class="row align-items-center">
-              <div class="col-9">
-                <label for="">Enable poll voting (multiple choices)</label>
-              </div>
-              <div class="col-2 text-center">
-                <label class="switch">
+               <div class="col-9">
+                  <label for="">Enable poll voting (multiple choices)</label>
+               </div>
+               <div class="col-2 text-center">
+                  <label class="switch">
                   <input onclick="handleClick(this)" type="checkbox" id="voting">
                   <span class="slider round"></span>
-                </label>
-              </div>
+                  </label>
+               </div>
             </div>
-          </div>
-        <div class="date-list" id="date-list">
-          <div id="schedule" class="form-group row align-items-center">
-            <div class="col-1"><p>#1</p></div>
-            <div class="col-9">
-              <label for="meeting-date-0">Date:</label>
-              <br>
-              <input type="date" id="meeting-date-0"
-                name="meeting-date-0">
-              <br>
-              <br>
-              <div class="row align-items-center">
-                <div class="col-sm-6">
-                    <label for="meeting-time-start-0">Starts:</label>
-                    <br>
-                    <input type="time" id="meeting-time-start-0"
-                      name="meeting-time-start-0">
-                    <br>
-                </div>
-                <div class="col-sm-6">
-                    <label for="meeting-time-end-0">Ends:</label>
-                    <br>
-                    <input type="time" id="meeting-time-end-0"
-                      name="meeting-time-end-0">
-                </div>
-              </div>
-              </div>
-            {{!-- <div class="col-1"><button type="button" class="btn btn-danger">X</button></div> --}}
-          </div>
          </div>
-          <div class="text-right">
+         <div class="date-list" id="date-list">
+            <div id="schedule" class="form-group row align-items-center">
+               <div class="col-1">
+                  <p>#1</p>
+               </div>
+               <div class="col-9">
+                  <label for="meetingDate">Date:</label>
+                  <br>
+                  <input type="date" id="meetingDate"
+                     name="meetingDate" required>
+                  <br>
+                  <br>
+                  <div class="row align-items-center">
+                     <div class="col-sm-6">
+                        <label for="meetingTimeStart">Starts:</label>
+                        <br>
+                        <input type="time" id="meetingTimeStart"
+                           name="meetingTimeStart" required>
+                        <br>
+                     </div>
+                     <div class="col-sm-6">
+                        <label for="meetingTimeEnd">Ends:</label>
+                        <br>
+                        <input type="time" id="meetingTimeEnd"
+                           name="meetingTimeEnd" required>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="text-right">
             <button id="newDateButton" type="button" class="btn-info btn align-items-center" disabled><i class="fa fa-plus fa-lg align-self-center mr-2"></i>Add Date & Time</button>
-          </div>
+         </div>
+         <hr>
+         <h4 id="attendeesTitle">
+            Attendees (0)
+         </h4>
+         <div class="form-group">
+            <div id="attendeeList" class="attendeeList align-items-center">
+              <p>No attendees were added.</p>
+            </div>
+            <br>
+            <label for="newAttendee">Email:</label>
+            <input type="text" class="form-control" id="newAttendee" autocomplete="off" placeholder="example@yourdomain.x">
+            <br>
+            <div class="text-right">
+               <button id="newAttendeeButton" type="button" class="btn btn-info align-items-center"><i class="fa fa-plus fa-lg align-self-center mr-2"></i>Add User</button>
+            </div>
+         </div>
+         <hr>
+         <label for="">
+           <input type="checkbox" required> I have checked that the information provided is correct.
+         </label>
+         <br>
+         <button id="submitButton" type="button" class="btn btn-primary btn-lg">Create meeting</button>
       </form>
    </div>
 </div>

@@ -266,6 +266,54 @@ input:checked + .slider:before {
 #schedule {
 	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
 	padding: 1em;
-	transition: all 1s;
+	-webkit-transition: opacity .5s ease-in-out;
+	-moz-transition: opacity .5s ease-in-out;
+	-ms-transition: opacity .5s ease-in-out;
+	-o-transition: opacity .5s ease-in-out;
+	transition: opacity .5s ease-in-out;
 }
 
+#date-list {
+	-webkit-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-ms-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.attendee {
+	border: none transparent;
+	background: #842bd7;
+	color: white;
+	width: 100%;
+	outline: none;
+	border-radius: 10px;
+	display: inline-block;
+	padding: 10px;
+}
+
+#attendee {
+	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+	padding: 1em;
+	-webkit-transition: opacity .5s ease-in-out;
+	-moz-transition: opacity .5s ease-in-out;
+	-ms-transition: opacity .5s ease-in-out;
+	-o-transition: opacity .5s ease-in-out;
+	transition: opacity .5s ease-in-out;
+	width: auto;
+}
+
+#attendee > * {
+	margin: 0.3em;
+	display: inline-block;
+}
+
+#attendee i {
+	font-size: 1.5em;
+}
+
+
+
+.attendee:focus {
+	border: none transparent;
+}
