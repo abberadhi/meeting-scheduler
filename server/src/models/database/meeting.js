@@ -17,12 +17,39 @@ let db;
 })();
 
 module.exports = {
-    "getUserByEmail": async (email) => {
-        let sql = `
-        SELECT * FROM users WHERE email = ?`;
-    
-        let res = await db.query(sql, [email]);
+    "createMeeting": async (
+        title, 
+        description, 
+        location, 
+        meetingDate, 
+        meetingTimeStart, 
+        meetingTimeEnd,
+        organizer,
+        attendees
+        ) => {
 
-        return res[0];
+        console.log(organizer);
+
+        // methods inserts meeting and everything relate into the database
+        let sql = `INSERT INTO meeting (
+            title, 
+            description, 
+            organizer_id, 
+            location) 
+            VALUES (
+                "?", 
+                "?", 
+                "${organizer}", 
+                "?");`;
+        
+        console.log(sql);
+
+        await db.query(sql, [
+            title,
+            description,
+            location
+        ]);
+
+        
     }
 }
