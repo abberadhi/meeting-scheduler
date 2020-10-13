@@ -1,7 +1,6 @@
 require('dotenv').config();
 const user = require('./user');
 const mysql = require("promise-mysql");
-var moment = require('moment');
 let db;
 
 (async function() {
