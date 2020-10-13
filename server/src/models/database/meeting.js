@@ -26,7 +26,8 @@ module.exports = {
         meetingTimeStart, 
         meetingTimeEnd,
         organizer,
-        attendees
+        attendees,
+        req
         ) => {
 
         // methods inserts meeting and everything relate into the database        
@@ -49,14 +50,13 @@ module.exports = {
         ]).then(async (res) => {
             console.log(res[0].insertId);
             let meetingID = res[0].insertId;
-
+            
+            // add attendees to meetingAttendees table
             // check if attandees is array, if not make it an array
             if (!Array.isArray(attendees)) {
                 attendees = [attendees];
             }
-                
 
-            // add attendees to meetingAttendees table
             for (let i = 0; i < attendees.length; i++) {
                 console.log("Checking: ", attendees[i]);
                 
@@ -72,15 +72,28 @@ module.exports = {
                                 INSERT INTO meetingAttendees 
                                     (meeting_id, user_id, seen) 
                                 VALUES
-                                    (${meetingID}, "${fetchedUser[0].id}", 0)`);
+                                    (${meetingID}, "${fetchedUser[0].id}", 0)`).then(() => {
+                                        req.flash('success_msg', {
+                                            message: `Meeting created successfully`
+                                        });
+                                    }).catch(() => {
+                                        req.flash('error_msg', {
+                                            message: `ERROR: Could not create meeting.`
+                                        });
+                                    });
                             } else {
-                                console.log("User fetched themselves", attendees[i])
+                                console.log("User fetched themselves", attendees[i]);
                             }
                         } else {
                             console.log("User Does not exist: ", attendees[i]);
+                            req.flash('error_msg', {
+                                message: `Warning: Could not find user ${attendees[i]}, therefore ignored.`
+                            });
                         }
                     });
             }
+
+            // add the suggested times
 
         });
     }

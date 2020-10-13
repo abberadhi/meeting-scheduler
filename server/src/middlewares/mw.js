@@ -37,6 +37,7 @@ module.exports = (app) => {
         // Read any flashed errors and save
         // in the response locals
         res.locals.error = req.flash('error_msg');
+        res.locals.success = req.flash('success_msg');
     
         // Check for simple error string and
         // convert to layout's expected format

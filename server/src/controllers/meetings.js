@@ -89,7 +89,8 @@ router.post('/create',
         req.body.meetingTimeStart,
         req.body.meetingTimeEnd,
         req.user.profile.oid,
-        req.body.attendee
+        req.body.attendee,
+        req
       );
 
 

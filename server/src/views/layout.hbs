@@ -74,6 +74,11 @@
             </nav>
         </header>
     </div>
+      {{#each success}}
+        <div class="alert alert-success" role="alert">
+          <p class="mb-3">{{ this.message }}</p>
+        </div>
+      {{/each}}
 
       {{#each error}}
         <div class="alert alert-danger" role="alert">
