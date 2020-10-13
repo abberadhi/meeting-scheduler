@@ -48,6 +48,9 @@ module.exports = {
             description,
             location
         ]).then(async (res) => {
+            req.flash('success_msg', {
+                message: `Meeting created successfully`
+            });
             console.log(res[0].insertId);
             let meetingID = res[0].insertId;
             
@@ -67,22 +70,11 @@ module.exports = {
                         if (fetchedUser.length > 0) {
                             // Only if user didn't add themselves. 
                             if (fetchedUser[0].id !== organizer) {
-                                console.log("does as intended");
                                 await db.query(`
                                 INSERT INTO meetingAttendees 
                                     (meeting_id, user_id, seen) 
                                 VALUES
-                                    (${meetingID}, "${fetchedUser[0].id}", 0)`).then(() => {
-                                        req.flash('success_msg', {
-                                            message: `Meeting created successfully`
-                                        });
-                                    }).catch(() => {
-                                        req.flash('error_msg', {
-                                            message: `ERROR: Could not create meeting.`
-                                        });
-                                    });
-                            } else {
-                                console.log("User fetched themselves", attendees[i]);
+                                    (${meetingID}, "${fetchedUser[0].id}", 0)`)
                             }
                         } else {
                             console.log("User Does not exist: ", attendees[i]);
@@ -94,7 +86,13 @@ module.exports = {
             }
 
             // add the suggested times
+            
 
+
+        }).catch(() => {
+            req.flash('error_msg', {
+                message: `ERROR: Could not create meeting.`
+            });
         });
     }
 }
