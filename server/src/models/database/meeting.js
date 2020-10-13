@@ -80,11 +80,6 @@ module.exports = {
                             console.log("User Does not exist: ", attendees[i]);
                         }
                     });
-
-                // let fetchedUser = await user.getUserByEmail(attendees[i]);
-                // console.log(fetchedUser);
-
-
             }
 
         });
