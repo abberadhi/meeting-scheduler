@@ -52,7 +52,7 @@ module.exports = {
             req.flash('success_msg', {
                 message: `Meeting created successfully`
             });
-            console.log(res[0].insertId);
+
             let meetingID = res[0].insertId;
             
             // add attendees to meetingAttendees table
@@ -86,13 +86,19 @@ module.exports = {
                     });
             }
 
+            // add organizer as attendee
+            await db.query(`
+            INSERT INTO meetingAttendees 
+                (meeting_id, user_id, seen) 
+            VALUES
+                (${meetingID}, "${organizer}", 1)`);
+
+
             // add the suggested times
-            
             // if array = multiple dates
             if (!Array.isArray(meetingDate)) {
                 let start = new Date(`${meetingDate} ${meetingTimeStart}`).toISOString().slice(0, 19).replace('T', ' ');;
                 let end = new Date(`${meetingDate} ${meetingTimeEnd}`).toISOString().slice(0, 19).replace('T', ' ');;
-                console.log(start);
 
                 await db.query(`
                 INSERT INTO pollChoice
