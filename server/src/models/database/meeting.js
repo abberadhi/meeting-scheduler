@@ -1,6 +1,7 @@
 require('dotenv').config();
 const user = require('./user');
 const mysql = require("promise-mysql");
+var moment = require('moment');
 let db;
 
 (async function() {
@@ -9,6 +10,7 @@ let db;
         "user":     process.env.DB_USER,
         "password": process.env.DB_PASS,
         "database": "meetx",
+        "dateStrings": "date",
         "multipleStatements": true
     });
 
@@ -87,11 +89,39 @@ module.exports = {
 
             // add the suggested times
             
+            // if array = multiple dates
+            if (!Array.isArray(meetingDate)) {
+                let start = new Date(`${meetingDate} ${meetingTimeStart}`).toISOString().slice(0, 19).replace('T', ' ');;
+                let end = new Date(`${meetingDate} ${meetingTimeEnd}`).toISOString().slice(0, 19).replace('T', ' ');;
+                console.log(start);
 
+                await db.query(`
+                INSERT INTO pollChoice
+                    (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
+                VALUES
+                    (?, "${organizer}", "${start}", "${end}", ?)`, [meetingID, 1]);
+            } else {
+                // insert every date choice to the database
+                for (let i = 0; i < meetingDate.length; i++) {
+                    try {
+                        let start = new Date(`${meetingDate[i]} ${meetingTimeStart[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
+                        let end = new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
+                    } catch (err) {
+                        console.log("Error! ", err);
+                        continue;
+                    }
 
-        }).catch(() => {
+                    await db.query(`
+                    INSERT INTO pollChoice
+                        (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
+                    VALUES
+                        (?, "${organizer}", "${start}", "${end}", ?)`, [meetingID, 0]);
+                }
+            }
+
+        }).catch((err) => {
             req.flash('error_msg', {
-                message: `ERROR: Could not create meeting.`
+                message: `ERROR: Could not create meeting.: ${err}`
             });
         });
     }
