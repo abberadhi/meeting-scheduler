@@ -54,7 +54,7 @@ module.exports = {
     
         let res = await db.query(sql, [id]);   
 
-        return res[0];
+        return res;
     },
 
     "updateRawUser": async (id, stringifiedData) => {
