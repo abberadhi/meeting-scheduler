@@ -40,10 +40,10 @@ module.exports = {
             organizer_id, 
             location) 
             VALUES (
-                "?", 
-                "?", 
+                ?, 
+                ?, 
                 "${organizer}", 
-                "?");
+                ?);
         SELECT LAST_INSERT_ID()`, [
             title,
             description,
@@ -129,5 +129,17 @@ module.exports = {
                 message: `ERROR: Could not create meeting.: ${err}`
             });
         });
+    },
+    "getFinalMeetings": async (id) => {
+        let res = await db.query(`
+        SELECT m.id, m.title, p.meeting_date_start, p.meeting_date_end FROM meetingAttendees as a
+        INNER JOIN meeting as m
+        ON m.id = a.meeting_id
+        INNER JOIN pollChoice as p
+        ON p.meeting_id = m.id
+        WHERE a.user_id = "00000000-0000-0000-d1af-09b8dfaf76ca" AND p.final = 1;
+        `)
+        
+        return res;
     }
 }

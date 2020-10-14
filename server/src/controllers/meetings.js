@@ -48,6 +48,10 @@ router.get('/',
         console.log("could ot get access token");
       }
 
+      let finalMeetings = await meeting.getFinalMeetings(req.user.profile.oid);
+      console.log("finalMeetings", finalMeetings);
+      params.finalMeetings = finalMeetings;
+
       res.render('meetings', params);
     }
   }

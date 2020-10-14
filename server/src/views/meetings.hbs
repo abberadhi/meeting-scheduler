@@ -14,7 +14,15 @@
           title: '{{this.subject}}',
           start: '{{eventDateTime this.start.dateTime}}',
           end: '{{eventDateTime this.end.dateTime}}',
-          color: '#add8e6',
+          color: '#add8e6'
+        },
+        {{/each}}
+        {{#each finalMeetings}}
+        {
+          title: '{{this.title}}',
+          start: '{{eventDateTime this.meeting_date_start}}',
+          end: '{{eventDateTime this.meeting_date_end}}',
+          color: 'blue',
           url: '/meetings'
         },
         {{/each}}
