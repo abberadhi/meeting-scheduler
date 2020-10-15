@@ -137,7 +137,7 @@ module.exports = {
         ON m.id = a.meeting_id
         INNER JOIN pollChoice as p
         ON p.meeting_id = m.id
-        WHERE a.user_id = "00000000-0000-0000-d1af-09b8dfaf76ca" AND p.final = 1;
+        WHERE a.user_id = "${id}" AND p.final = 1;
         `)
         
         return res;
