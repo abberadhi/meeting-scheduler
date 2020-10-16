@@ -1,6 +1,9 @@
 
 <div style="margin-top: 5em;" class="container">
 {{json meeting.details.[0]}}
+<br>
+<br>
+{{json meeting.attendees}}
 
     <p class="align-items-right text-right">Created: {{readableDate meeting.details.[0].creation_date}}</p>
   <div class="row">
@@ -8,7 +11,9 @@
       asd
     </div>
     <div class="col-md-3">
-      hej
+      {{#each meeting.attendees}}
+        <p>{{this.displayName}}</p>
+      {{/each}}
     </div>
   </div>
 </div>

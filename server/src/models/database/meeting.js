@@ -66,7 +66,7 @@ module.exports = {
                 
                 // check if user is registered
                 // get the user;
-                await db.query(`SELECT * FROM users WHERE email = "?";`, [attendees[i]])
+                await db.query(`SELECT * FROM users WHERE email = ?;`, [attendees[i]])
                     .then(async (fetchedUser) => {
                         if (fetchedUser.length > 0) {
                             // Only if user didn't add themselves. 
@@ -185,7 +185,12 @@ module.exports = {
         // get meeting details
         let meeting = {
             details: await db.query(`
-                SELECT * FROM meeting WHERE id = ?`, [m_id])
+                SELECT * FROM meeting WHERE id = ?`, [m_id]),
+            attendees: await db.query(`
+            SELECT * FROM meetingAttendees AS a
+            INNER JOIN users AS u
+            ON a.user_id = u.id
+            WHERE a.meeting_id = ?;`, [m_id])
         };
 
         console.log("meeting", meeting)

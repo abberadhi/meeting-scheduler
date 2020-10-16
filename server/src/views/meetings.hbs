@@ -67,6 +67,7 @@
       {{#each finalMeetings}}
           {{#if this.active}}
           {{else}}
+          <a class="meeting-link" href="/meetings/view/{{this.id}}">
             <div class="meeting-list ended">
             <h4>{{this.title}}</h4>
             <p><i class="fas fa-calendar-check"></i> {{readableDate this.meeting_date_start}}<br>
@@ -78,6 +79,7 @@
               <i class="fas fa-poll"></i> Didn't vote.</p>
             {{/if}}
           </div>
+          </a>
           {{/if}}
       {{/each}}
 

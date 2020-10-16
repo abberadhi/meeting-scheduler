@@ -28,7 +28,7 @@ module.exports = {
 
     "registerUser": async (id, displayName, email) => {
         let sql = `
-        INSERT INTO users (id, displayName, email) VALUES (?, "?", "?")`;
+        INSERT INTO users (id, displayName, email) VALUES (?, ?, ?)`;
         // add user
         await db.query(sql, [id, displayName, email]);
 
