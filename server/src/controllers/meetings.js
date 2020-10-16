@@ -3,7 +3,7 @@ var router = express.Router();
 var graph = require('../models/graph');
 var tokens = require('../models/tokens.js');
 var meeting = require('../models/database/meeting.js');
-
+var fs = require('fs');
 
 /* GET /meetings */
 router.get('/',
@@ -203,7 +203,23 @@ router.get('/view/:id',
       
       params.meeting = await meeting.getMeetingById(req.params.id);
       
-      
+      // attach profile image to user object if it exists
+      for (let i = 0; i < params.meeting.attendees.length; i++) {
+          // check if user has profile picture
+          await fs.access(`../server/src/public/avatars/${params.meeting.attendees[i].id}.png`, fs.F_OK, (err) => {
+            if (!err) {
+                // attach location on user object
+                  try {
+                      params.meeting.attendees[i].picture = `avatars/${params.meeting.attendees[i].id}.png`;
+                  } catch (error) {
+                      console.log("Error has occured: ", error);
+                  }
+              }
+          })
+      }
+
+      console.log(params.meeting.attendees)
+
 
       res.render('viewMeeting', params);
     }
