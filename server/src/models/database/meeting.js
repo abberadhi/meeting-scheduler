@@ -161,5 +161,37 @@ module.exports = {
         `);
         
         return res;
+    },
+    "isAllowedToMeeting": async (u_id, m_id) => {
+        let sql = `
+        SELECT (COUNT(*)>0) as allowed 
+        FROM meetingAttendees 
+        WHERE meeting_id = ? AND 
+        user_id = "${u_id}";
+        `;
+
+        let res = await db.query(sql, [m_id]);
+
+        return res[0].allowed;
+    },
+    "setSeenMeeting": async (u_id, m_id) => {
+        await db.query(`
+        UPDATE meetingAttendees SET seen = 1 
+        WHERE meeting_id = ? AND 
+        user_id = "${u_id}" 
+        `, [m_id]);
+    },
+    "getMeetingById": async (m_id) =>  {
+        // get meeting details
+        let meeting = {
+            details: await db.query(`
+                SELECT * FROM meeting WHERE id = ?`, [m_id])
+        };
+
+        console.log("meeting", meeting)
+
+        //get pollChoices
+
+        return meeting;
     }
 }

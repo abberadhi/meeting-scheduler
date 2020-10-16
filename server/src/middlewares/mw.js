@@ -76,6 +76,10 @@ module.exports = (app) => {
         // return moment(dateTime).format('M/D/YY h:mm A');
     });
 
+    hbs.registerHelper('json', function(context) {
+        return JSON.stringify(context);
+    });
+
     hbs.registerHelper('ifCond', function(time) {
         if (time > 0) {
             return true;

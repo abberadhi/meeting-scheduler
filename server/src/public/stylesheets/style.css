@@ -158,6 +158,20 @@ header.outer-container {
 	border: 1px solid #ccc;
 }
 
+.meeting-list:hover {
+	background-color: #85c6ff;
+}
+
+.meeting-link {
+	color: black;
+	text-decoration: none;
+}
+
+.meeting-link:hover {
+	color: black;
+	text-decoration: none;
+}
+
 .ended {
 	background-color: #dbeeff  !important;
 }
@@ -165,6 +179,7 @@ header.outer-container {
 #calendar {
 	margin-top: 3em;
 }
+
 
 @media screen and (max-width: 991.98px) {
 	.custom-section .col-lg-8 img {
