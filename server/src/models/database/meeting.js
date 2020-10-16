@@ -108,9 +108,11 @@ module.exports = {
             } else {
                 // insert every date choice to the database
                 for (let i = 0; i < meetingDate.length; i++) {
+                    let start;
+                    let end;
                     try {
-                        let start = new Date(`${meetingDate[i]} ${meetingTimeStart[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
-                        let end = new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
+                        start = new Date(`${meetingDate[i]} ${meetingTimeStart[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
+                        end = new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
                     } catch (err) {
                         console.log("Error! ", err);
                         continue;
@@ -132,13 +134,31 @@ module.exports = {
     },
     "getFinalMeetings": async (id) => {
         let res = await db.query(`
-        SELECT m.id, m.title, p.meeting_date_start, p.meeting_date_end FROM meetingAttendees as a
-        INNER JOIN meeting as m
+        SELECT
+        m.id,
+        m.title,
+        m.location,
+        a.user_id,
+        pc.final,
+        pc.meeting_date_start,
+        pc.meeting_date_end,
+        a.seen,
+        (SELECT COUNT(*) FROM meetingAttendees WHERE meeting_id = m.id) as attendeesCounter,
+        (SELECT COUNT(*) FROM pollVote WHERE pollChoice_id = pc.id AND user_id = a.user_id) AS votes,
+        (SELECT TIMEDIFF(pc.meeting_date_end, now()) > 0) as active,
+        (SELECT COUNT(*) FROM pollVote
+        LEFT JOIN pollChoice
+        ON pollVote.pollChoice_id = pollChoice.id
+        WHERE pollVote.user_id = "${id}" AND pollChoice.meeting_id = m.id 
+        ) as voted 
+        FROM meeting AS m
+        INNER JOIN meetingAttendees AS a
         ON m.id = a.meeting_id
-        INNER JOIN pollChoice as p
-        ON p.meeting_id = m.id
-        WHERE a.user_id = "${id}" AND p.final = 1;
-        `)
+        INNER JOIN pollChoice AS pc
+        ON pc.meeting_id = m.id
+        WHERE a.user_id = "${id}";
+
+        `);
         
         return res;
     }

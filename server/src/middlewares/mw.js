@@ -13,6 +13,7 @@ var cookieParser = require('cookie-parser');
 var fs = require('fs');
 
 var passport = require('passport');
+const { type } = require('os');
 
 module.exports = (app) => {
 
@@ -55,12 +56,38 @@ module.exports = (app) => {
 
     var hbs = require('hbs');
     var moment = require('moment');
-    // Helper to format date/time sent by Graph
-    hbs.registerHelper('eventDateTime', function(dateTime){
+    // Helper to format date/time sent by Graph & MySQL
+    hbs.registerHelper('eventDate', function(dateTime) {
         console.log(dateTime);
-        return moment(dateTime).format('YYYY-MM-DD');
+        return moment(dateTime).utcOffset(2).format('YYYY-MM-DD');
         // return moment(dateTime).format('M/D/YY h:mm A');
     });
+
+    // Helper to format date/time sent by Graph & MySQL
+    hbs.registerHelper('eventTime', function(dateTime) {
+        console.log(dateTime);
+        return moment(dateTime).utcOffset(2).format('hh:mm:ss');
+        // return moment(dateTime).format('M/D/YY h:mm A');
+    });
+
+    hbs.registerHelper('readableDate', function(dateTime) {
+        console.log(dateTime);
+        return moment(dateTime).utcOffset(2).format('LL HH:mm');
+        // return moment(dateTime).format('M/D/YY h:mm A');
+    });
+
+    hbs.registerHelper('ifCond', function(time) {
+        if (time > 0) {
+            return true;
+        }
+        return false;
+    });
+
+    hbs.registerHelper('decrement', function(value) {
+        console.log(value);
+        return value-1
+    });
+    
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));

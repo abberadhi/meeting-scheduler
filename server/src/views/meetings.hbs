@@ -9,27 +9,30 @@
       initialView: 'dayGridMonth',
       themeSystem: 'bootstrap',
         events: [
-        {{#each events}}
-        {
-          title: '{{this.subject}}',
-          start: '{{eventDateTime this.start.dateTime}}',
-          end: '{{eventDateTime this.end.dateTime}}',
-          color: '#add8e6'
-        },
-        {{/each}}
-        {{#each finalMeetings}}
-        {
-          title: '{{this.title}}',
-          start: '{{eventDateTime this.meeting_date_start}}',
-          end: '{{eventDateTime this.meeting_date_end}}',
-          color: 'blue',
-          url: '/meetings'
-        },
-        {{/each}}
-  ]
-    });
-    calendar.render();
+          {{#each events}}
+          {
+            title: '{{this.subject}}',
+            start: '{{eventDate this.start.dateTime}}',
+            end: '{{eventDate this.end.dateTime}}',
+            color: '#add8e6'
+          },
+          {{/each}}
+          {{#each finalMeetings}}
+          {{#if this.final}}
+          {
+            title: '{{this.title}}',
+            start: '{{eventDate this.meeting_date_start}}',
+            end: '{{eventDate this.meeting_date_end}}',
+            color: 'blue',
+            url: '/meetings'
+          },
+          {{/if}}
+          {{/each}}
+        ]
   });
+
+  calendar.render();
+});
 
 </script>
 <div style="margin-top: 5em;" class="container">
@@ -37,11 +40,44 @@
     <div class="col-md-3">
       <a href="/meetings/create" class="addMeeting btn btn-primary"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
       <hr>
-      <h5>Upcoming meetings</h5>
-      <div class="meeting-list">
-        <h4>Title</h4>
-        <p>Date & time</p>
-      </div>
+      <h5>New:</h5>
+      <hr>
+      <h5>Upcoming:</h5>
+      {{#each finalMeetings}}
+        {{#if this.final}}
+          {{#if this.active}}
+          <div class="meeting-list">
+            <h4>{{this.title}}</h4>
+            <p><i class="fas fa-calendar-check"></i> {{readableDate this.meeting_date_start}}<br>
+            <i class="fas fa-map-marker"></i> {{this.location}}<br>
+            <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
+            {{#if this.voted }}
+              <i style="color: green" class="fas fa-poll"></i> You've voted.</p>
+            {{else}}
+              <i style="color: red" class="fas fa-poll"></i> Not yet voted.</p>
+            {{/if}}
+          </div>
+          {{/if}}
+        {{/if}}
+      {{/each}}
+      <hr>
+      <h5>Previous:</h5>  
+      {{#each finalMeetings}}
+          {{#if this.active}}
+          {{else}}
+            <div class="meeting-list ended">
+            <h4>{{this.title}}</h4>
+            <p><i class="fas fa-calendar-check"></i> {{readableDate this.meeting_date_start}}<br>
+            <i class="fas fa-map-marker"></i> {{this.location}}<br>
+            <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)</p>
+            {{#if this.voted }}
+              <i class="fas fa-poll"></i> You've voted.</p>
+            {{else}}
+              <i class="fas fa-poll"></i> Didn't vote.</p>
+            {{/if}}
+          </div>
+          {{/if}}
+      {{/each}}
 
     </div>
       <div class="col-md-9 spacing-1em">

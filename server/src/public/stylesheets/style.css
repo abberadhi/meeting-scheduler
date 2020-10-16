@@ -158,6 +158,10 @@ header.outer-container {
 	border: 1px solid #ccc;
 }
 
+.ended {
+	background-color: #dbeeff  !important;
+}
+
 #calendar {
 	margin-top: 3em;
 }
