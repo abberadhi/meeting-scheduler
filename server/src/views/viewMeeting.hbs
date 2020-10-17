@@ -13,14 +13,35 @@
       <hr>
         <p class="align-items-right text-right">Created: {{readableDate meeting.details.[0].creation_date}}</p>
         <div class="row">
-      <div class="col-md-5">
-        <p><i class="fas fa-clock"></i> Date/time: To be determined.</p>
-        <p><i class="fas fa-map-marker-alt"></i> Location: {{meeting.details.[0].location}}</p>
+      <div class="col-md-4">
+        <p><i class="fas fa-clock"></i> To be determined.</p>
+        <p><i class="fas fa-map-marker-alt"></i> {{meeting.details.[0].location}}</p>
         <p>Description: {{meeting.details.[0].description}}</p>
       </div>
-      <div class="col-md-7">
-        <p><i class="fas fa-map-marker-alt"></i> Location: {{meeting.details.[0].location}}</p>
-        <p>Description: {{meeting.details.[0].description}}</p>
+      <div class="col-md-8">
+    <div class="col-md-4"></div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="fa fa-poll"></span> Select what times fit you</h3>
+            </div>
+            <div class="panel-body">
+              <div class="box">
+                <input class="align-items-center" id="one" type="checkbox">
+                <span class="check"></span>
+                <label for="one">Check me.</label>
+              </div>
+              <div class="box">
+                <input id="two" type="checkbox">
+                <span class="check"></span>
+                <label for="two">Hey! Check me too.</label>
+              </div>
+            </div>
+            <div class="panel-footer text-center">
+                <button type="button" class="btn btn-primary btn-block btn-sm">
+                    Vote</button>
+                <a href="#" class="small">None of these times fit me</a>
+            </div>
+        </div>
       </div>
       </div>
     </div>
