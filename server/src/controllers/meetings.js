@@ -201,6 +201,9 @@ router.get('/view/:id',
         res.redirect('/meetings');
       }
       
+      // set user to seen
+      await meeting.setSeenMeeting(req.user.profile.oid, req.params.id);
+
       params.meeting = await meeting.getMeetingById(req.params.id);
       
       // attach profile image to user object if it exists

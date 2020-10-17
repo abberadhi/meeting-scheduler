@@ -4,18 +4,31 @@
 <br>
 <br>
 {{json meeting.attendees}} --}}
-    <h4>{{meeting.details.[0].title}}</h4>
+    
 
-    <p class="align-items-right text-right">Created: {{readableDate meeting.details.[0].creation_date}}</p>
   <div class="row">
     <div class="col-md-9">
-      asd
+
+      <h4>{{meeting.details.[0].title}}</h4>
+      <hr>
+        <p class="align-items-right text-right">Created: {{readableDate meeting.details.[0].creation_date}}</p>
+        <div class="row">
+      <div class="col-md-5">
+        <p><i class="fas fa-clock"></i> Date/time: To be determined.</p>
+        <p><i class="fas fa-map-marker-alt"></i> Location: {{meeting.details.[0].location}}</p>
+        <p>Description: {{meeting.details.[0].description}}</p>
+      </div>
+      <div class="col-md-7">
+        <p><i class="fas fa-map-marker-alt"></i> Location: {{meeting.details.[0].location}}</p>
+        <p>Description: {{meeting.details.[0].description}}</p>
+      </div>
+      </div>
     </div>
     <div class="col-md-3">
       <h5>Attendees:</h5>
 
       {{#each meeting.attendees}}
-      <div>
+      <div style="margin-bottom: 2em;" class="attendees-list">
         
         <p>{{#if this.picture}}<img src="/{{ this.picture }}" class="rounded-circle align-self-center mr-2" style="width: 32px; border: 1px solid grey;">{{else}}
         <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2" style="font-size: 30px;"></i>
@@ -25,11 +38,10 @@
         <i class="fas fa-crown" data-toggle="tooltip" data-placement="top" title="Organizer"></i>
         {{/if}}
         {{#if this.seen}}
-        <i class="fas fa-check" data-toggle="tooltip" data-placement="top" title="seen"></i>
+        <i class="fas fa-check" data-toggle="tooltip" data-placement="top" title="Seen"></i>
         {{/if}}
         </p>
-        
-        
+        <p style="font-size: 0.8em; margin-top: -1em;">{{this.email}}</p>  
       </div>
       {{/each}}
     </div>

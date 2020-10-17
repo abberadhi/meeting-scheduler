@@ -158,6 +158,12 @@ header.outer-container {
 	border: 1px solid #ccc;
 }
 
+.meeting-list h4 {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .meeting-list:hover {
 	background-color: #85c6ff;
 }
@@ -178,6 +184,10 @@ header.outer-container {
 
 #calendar {
 	margin-top: 3em;
+}
+
+.attendees-list {
+	white-space: nowrap;
 }
 
 

@@ -72,12 +72,13 @@
             <h4>{{this.title}}</h4>
             <p><i class="fas fa-calendar-check"></i> {{readableDate this.meeting_date_start}}<br>
             <i class="fas fa-map-marker"></i> {{this.location}}<br>
-            <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)</p>
+            <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
             {{#if this.voted }}
-              <i class="fas fa-poll"></i> You've voted.</p>
+              <i class="fas fa-poll"></i> You've voted.
             {{else}}
-              <i class="fas fa-poll"></i> Didn't vote.</p>
+              <i class="fas fa-poll"></i> Didn't vote.
             {{/if}}
+            </p>
           </div>
           </a>
           {{/if}}
