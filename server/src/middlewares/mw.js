@@ -56,22 +56,35 @@ module.exports = (app) => {
     var moment = require('moment');
     // Helper to format date/time sent by Graph & MySQL
     hbs.registerHelper('eventDate', function(dateTime) {
-        console.log(dateTime);
         return moment(dateTime).utcOffset(2).format('YYYY-MM-DD');
-        // return moment(dateTime).format('M/D/YY h:mm A');
     });
 
     // Helper to format date/time sent by Graph & MySQL
     hbs.registerHelper('eventTime', function(dateTime) {
-        console.log(dateTime);
         return moment(dateTime).utcOffset(2).format('hh:mm:ss');
-        // return moment(dateTime).format('M/D/YY h:mm A');
     });
 
     hbs.registerHelper('readableDate', function(dateTime) {
-        console.log(dateTime);
         return moment(dateTime).utcOffset(2).format('LL HH:mm');
-        // return moment(dateTime).format('M/D/YY h:mm A');
+    });
+
+    // get time in HH:mm
+    hbs.registerHelper('time24', function(dateTime) {
+        return moment(dateTime).utcOffset(2).format('HH:mm');
+    });
+
+    // handler for joining attendes with linebreak
+    hbs.registerHelper('joinAttendees', function(names) {
+        names = names.map((obj) => {
+            return obj.displayName;
+        })
+
+        return names.join("<br>");
+    });
+
+    // return length of array
+    hbs.registerHelper('lengthArray', function(names) {
+        return names.length;
     });
 
     hbs.registerHelper('json', function(context) {

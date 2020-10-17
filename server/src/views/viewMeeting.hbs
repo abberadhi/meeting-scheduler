@@ -1,9 +1,9 @@
 
 <div style="margin-top: 5em;" class="container">
-{{!-- {{json meeting.details.[0]}}
+{{json meeting.pollChoices}}
 <br>
 <br>
-{{json meeting.attendees}} --}}
+{{joinAttendees meeting.pollChoices.[0].votes}}
     
 
   <div class="row">
@@ -25,12 +25,14 @@
                 <h3 class="panel-title"><span class="fa fa-poll"></span> Attendance date & time</h3>
             </div>
             <div class="panel-body">
+              {{#each meeting.pollChoices}}
               <div class="box">
                 <input id="two" type="checkbox">
                 <span class="check"></span>
-                <label for="two">Hey! Check me too.</label>
-                <p data-toggle="tooltip" data-placement="right" data-html="true"  title="Organizern<br>asd<br>"><i class="fas fa-user"></i> +5</p>
+                <label for="two">{{eventDate this.meeting_date_start}} ({{time24 this.meeting_date_start}} - {{time24 this.meeting_date_end}})</label>
+                <p data-toggle="tooltip" data-placement="right" data-html="true"  title="{{joinAttendees this.votes}}"><i class="fas fa-user"></i> +{{lengthArray this.votes}}</p>
               </div>
+              {{/each}}
             </div>
             <div class="panel-footer text-center">
                 <button type="button" class="btn btn-primary btn-block btn-sm">
