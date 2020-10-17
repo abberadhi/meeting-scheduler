@@ -185,17 +185,34 @@ module.exports = {
         // get meeting details
         let meeting = {
             details: await db.query(`
-                SELECT * FROM meeting WHERE id = ?`, [m_id]),
+                SELECT * FROM meeting WHERE id = ?`, [m_id]), // details about meeting
             attendees: await db.query(`
             SELECT * FROM meetingAttendees AS a
             INNER JOIN users AS u
             ON a.user_id = u.id
-            WHERE a.meeting_id = ?;`, [m_id])
+            WHERE a.meeting_id = ?;`, [m_id]), // details about attendees
+            pollChoices: await (async function () {
+                // get all pollChoices
+                let pollChoices_db = await db.query(`
+                SELECT * from pollChoice WHERE meeting_id = ?;`, [m_id]);
+
+                // loop through pollChoices array and attach names of who voted 
+                for (let i = 0; i < pollChoices_db.length; i++) {
+                    pollChoices_db[i].votes = await db.query(`
+                    SELECT users.displayName FROM users
+                    INNER JOIN pollVote
+                    ON users.id = pollVote.user_id WHERE pollVote.pollChoice_id = ?;
+                    `, [pollChoices_db[i].id]);
+                }
+
+                return pollChoices_db;
+
+            })() // details about prefered time and date & who's voted
+
         };
 
         console.log("meeting", meeting)
 
-        //get pollChoices
 
         return meeting;
     }
