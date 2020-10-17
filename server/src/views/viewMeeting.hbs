@@ -1,9 +1,10 @@
 
 <div style="margin-top: 5em;" class="container">
-{{json meeting.details.[0]}}
+{{!-- {{json meeting.details.[0]}}
 <br>
 <br>
-{{json meeting.attendees}}
+{{json meeting.attendees}} --}}
+    <h4>{{meeting.details.[0].title}}</h4>
 
     <p class="align-items-right text-right">Created: {{readableDate meeting.details.[0].creation_date}}</p>
   <div class="row">
@@ -11,9 +12,31 @@
       asd
     </div>
     <div class="col-md-3">
+      <h5>Attendees:</h5>
+
       {{#each meeting.attendees}}
-        <p>{{this.displayName}}</p>
+      <div>
+        
+        <p>{{#if this.picture}}<img src="/{{ this.picture }}" class="rounded-circle align-self-center mr-2" style="width: 32px; border: 1px solid grey;">{{else}}
+        <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2" style="font-size: 30px;"></i>
+        {{/if}}
+        {{this.displayName}} 
+        {{#if (ifEquals this.user_id ../meeting.details.[0].organizer_id)}}
+        <i class="fas fa-crown" data-toggle="tooltip" data-placement="top" title="Organizer"></i>
+        {{/if}}
+        {{#if this.seen}}
+        <i class="fas fa-check" data-toggle="tooltip" data-placement="top" title="seen"></i>
+        {{/if}}
+        </p>
+        
+        
+      </div>
       {{/each}}
     </div>
   </div>
 </div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>

@@ -11,9 +11,7 @@ var path = require('path');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fs = require('fs');
-
 var passport = require('passport');
-const { type } = require('os');
 
 module.exports = (app) => {
 
@@ -85,6 +83,10 @@ module.exports = (app) => {
             return true;
         }
         return false;
+    });
+
+    hbs.registerHelper('ifEquals', function(arg1, arg2) {
+        return arg1 == arg2;
     });
 
     hbs.registerHelper('decrement', function(value) {
