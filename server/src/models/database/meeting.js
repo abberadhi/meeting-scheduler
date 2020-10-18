@@ -104,7 +104,13 @@ module.exports = {
                 INSERT INTO pollChoice
                     (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
                 VALUES
-                    (?, "${organizer}", "${start}", "${end}", ?)`, [meetingID, 1]);
+                    (?, "${organizer}", "${start}", "${end}", ?);
+                    SELECT LAST_INSERT_ID();`, [meetingID, 1]).then(async (res) => {
+                        await db.query(`INSERT INTO pollVote 
+                        (pollChoice_id, user_id) 
+                        VALUES 
+                        (${res[0].insertId}, "${organizer}");`);
+                    });
             } else {
                 // insert every date choice to the database
                 for (let i = 0; i < meetingDate.length; i++) {
@@ -122,7 +128,13 @@ module.exports = {
                     INSERT INTO pollChoice
                         (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
                     VALUES
-                        (?, "${organizer}", "${start}", "${end}", ?)`, [meetingID, 0]);
+                        (?, "${organizer}", "${start}", "${end}", ?);
+                        SELECT LAST_INSERT_ID();`, [meetingID, 1]).then(async (res) => {
+                            await db.query(`INSERT INTO pollVote 
+                            (pollChoice_id, user_id) 
+                            VALUES 
+                            (${res[0].insertId}, "${organizer}");`);
+                        });
                 }
             }
 
