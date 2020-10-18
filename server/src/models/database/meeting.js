@@ -227,5 +227,38 @@ module.exports = {
 
 
         return meeting;
+    },
+    "vote": async (votes, user, meet_id) => {
+        console.log(votes);
+        // remove pollvotes of user on meeting
+        await db.query(`
+        DELETE e FROM pollVote e
+        INNER JOIN pollChoice c
+        ON e.pollChoice_id = c.id
+        WHERE c.meeting_id = ? AND
+        e.user_id = "${user}";
+        `, meet_id);
+
+        if (!votes) return;
+
+        // insert new votes
+        for (let i = 0; i < votes.length; i++) {
+            // check if meeting has that pollChoice
+            console.log("vote", votes[i]);
+
+            await db.query(`SELECT * FROM pollChoice
+            WHERE id = ? AND meeting_id = ?`, [votes[i], meet_id]).then(async (res) => {
+                console.log("RES OAIDJOAISDASODSJDOJAISDASDASDASOJIDJAISD", res);
+                if (res.length > 0) {
+                    await db.query(`
+                    INSERT INTO pollVote
+                    (pollChoice_id, user_id)
+                    VALUES
+                    (?, "${user}")`, [votes[i]]);
+                }
+            })
+
+
+        }
     }
 }
