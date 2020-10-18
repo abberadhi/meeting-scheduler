@@ -92,6 +92,18 @@ module.exports = (app) => {
 
         return false;
     });
+
+    // get final date, returns message if no date finalized
+    hbs.registerHelper('finalDate', function(choices) {
+        for (let i = 0; i < choices.length; i++) {
+            console.log(choices[i]);
+            if (choices[i].final) {
+                return moment(choices[i].meeting_date_start).utcOffset(2).format('LL HH:mm');
+            }
+        }
+
+        return "To be determined.";
+    });
     
 
     // return length of array
