@@ -411,7 +411,7 @@ input:checked + .slider:before {
 	position: absolute;
 	transform: scale(0);
 	background-size: 50%;
-	background-image: url('http://s6.picofile.com/d/8392306668/c38c12a0-6db3-47d4-a80c-7dad8fab5186/checkmark.svg');
+	background-image: url('../assets/icons/check-mark.svg');
 	background-repeat: no-repeat;
 	background-position: center;
 	transition-delay: 0.2s !important;

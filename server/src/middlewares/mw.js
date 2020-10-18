@@ -82,6 +82,18 @@ module.exports = (app) => {
         return names.join("<br>");
     });
 
+    // check if user already voted
+    hbs.registerHelper('hasVoted', function(names, user) {
+        for (let i = 0; i < names.length; i++) {
+            if (names[i].displayName == user) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+    
+
     // return length of array
     hbs.registerHelper('lengthArray', function(names) {
         return names.length;
