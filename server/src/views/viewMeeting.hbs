@@ -24,9 +24,9 @@
               <div class="panel-body">
                 {{#each meeting.pollChoices}}
                 <div class="box">
-                  <input value="{{this.id}}" name="time" id="two" type="checkbox" {{#if (hasVoted this.votes ../user.displayName)}}checked{{/if}}>
+                  <input value="{{this.id}}" name="time" id="{{this.id}}" type="checkbox" {{#if (hasVoted this.votes ../user.displayName)}}checked{{/if}}>
                   <span class="check"></span>
-                  <label for="two">{{eventDate this.meeting_date_start}} ({{time24 this.meeting_date_start}} - {{time24 this.meeting_date_end}})</label>
+                  <label for="{{this.id}}">{{eventDate this.meeting_date_start}} ({{time24 this.meeting_date_start}} - {{time24 this.meeting_date_end}})</label>
                   <p data-toggle="tooltip" data-placement="right" data-html="true"  title="{{joinAttendees this.votes}}"><i class="fas fa-user"></i> +{{lengthArray this.votes}}</p>
                 </div>
                 {{/each}}

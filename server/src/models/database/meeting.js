@@ -129,7 +129,7 @@ module.exports = {
                         (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
                     VALUES
                         (?, "${organizer}", "${start}", "${end}", ?);
-                        SELECT LAST_INSERT_ID();`, [meetingID, 1]).then(async (res) => {
+                        SELECT LAST_INSERT_ID();`, [meetingID, 0]).then(async (res) => {
                             await db.query(`INSERT INTO pollVote 
                             (pollChoice_id, user_id) 
                             VALUES 
