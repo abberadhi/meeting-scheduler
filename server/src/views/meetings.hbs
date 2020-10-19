@@ -44,7 +44,7 @@
       <hr>
       <h5>Upcoming:</h5>
       {{#each finalMeetings}}
-        {{#if this.final}}
+        {{#if this.seen}} 
           {{#if this.active}}
           <a class="meeting-link" href="/meetings/view/{{this.id}}">
           <div class="meeting-list">

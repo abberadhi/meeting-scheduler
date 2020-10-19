@@ -104,7 +104,6 @@ module.exports = (app) => {
 
         return "To be determined.";
     });
-    
 
     // return length of array
     hbs.registerHelper('lengthArray', function(names) {

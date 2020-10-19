@@ -169,7 +169,6 @@ module.exports = {
         INNER JOIN pollChoice AS pc
         ON pc.meeting_id = m.id
         WHERE a.user_id = "${id}";
-
         `);
         
         return res;
