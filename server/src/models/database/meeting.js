@@ -146,14 +146,14 @@ module.exports = {
     },
     "getFinalMeetings": async (id) => {
         let res = await db.query(`
-        SELECT
+        SELECT DISTINCT
         m.id,
         m.title,
         m.location,
         a.user_id,
+        (SELECT meeting_date_start FROM pollChoice WHERE final = 1 AND meeting_id = m.id) as meeting_date_start,
+        (SELECT meeting_date_end FROM pollChoice WHERE final = 1 AND meeting_id = m.id) as meeting_date_end,
         pc.final,
-        pc.meeting_date_start,
-        pc.meeting_date_end,
         a.seen,
         (SELECT COUNT(*) FROM meetingAttendees WHERE meeting_id = m.id) as attendeesCounter,
         (SELECT COUNT(*) FROM pollVote WHERE pollChoice_id = pc.id AND user_id = a.user_id) AS votes,
@@ -161,8 +161,8 @@ module.exports = {
         (SELECT COUNT(*) FROM pollVote
         LEFT JOIN pollChoice
         ON pollVote.pollChoice_id = pollChoice.id
-        WHERE pollVote.user_id = "${id}" AND pollChoice.meeting_id = m.id 
-        ) as voted 
+        WHERE pollVote.user_id = "${id}" AND pollChoice.meeting_id = m.id
+        ) as voted
         FROM meeting AS m
         INNER JOIN meetingAttendees AS a
         ON m.id = a.meeting_id

@@ -41,6 +41,23 @@
       <a href="/meetings/create" class="addMeeting btn btn-primary"><i class="fa fa-plus fa-lg align-self-center mr-2"></i> New Meeting</a>
       <hr>
       <h5>New:</h5>
+      {{#each finalMeetings}}
+        {{#unless this.seen}} 
+          <a class="meeting-link" href="/meetings/view/{{this.id}}">
+          <div class="meeting-list">
+            <h4>{{this.title}}</h4>
+            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start}}{{else}}To be determined.{{/if}}<br>
+            <i class="fas fa-map-marker"></i> {{this.location}}<br>
+            <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
+            {{#if this.voted }}
+              <i style="color: green" class="fas fa-poll"></i> You've voted.</p>
+            {{else}}
+              <i style="color: red" class="fas fa-poll"></i> Not yet voted.</p>
+            {{/if}}
+          </div>
+          </a>
+        {{/unless}}
+      {{/each}}
       <hr>
       <h5>Upcoming:</h5>
       {{#each finalMeetings}}
