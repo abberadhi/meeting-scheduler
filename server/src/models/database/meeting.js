@@ -156,7 +156,6 @@ module.exports = {
         pc.final,
         a.seen,
         (SELECT COUNT(*) FROM meetingAttendees WHERE meeting_id = m.id) as attendeesCounter,
-        (SELECT COUNT(*) FROM pollVote WHERE pollChoice_id = pc.id AND user_id = a.user_id) AS votes,
         (SELECT TIMEDIFF(pc.meeting_date_end, now()) > 0) as active,
         (SELECT COUNT(*) FROM pollVote
         LEFT JOIN pollChoice
@@ -229,6 +228,9 @@ module.exports = {
     },
     "vote": async (votes, user, meet_id) => {
         console.log(votes);
+
+
+
         // remove pollvotes of user on meeting
         await db.query(`
         DELETE e FROM pollVote e
@@ -240,6 +242,11 @@ module.exports = {
 
         if (!votes) return;
 
+        // if votes is not an array, make it an array
+        if (!Array.isArray(votes)) {
+            votes = [votes];
+        }
+
         // insert new votes
         for (let i = 0; i < votes.length; i++) {
             // check if meeting has that pollChoice
@@ -247,8 +254,8 @@ module.exports = {
 
             await db.query(`SELECT * FROM pollChoice
             WHERE id = ? AND meeting_id = ?`, [votes[i], meet_id]).then(async (res) => {
-                console.log("RES OAIDJOAISDASODSJDOJAISDASDASDASOJIDJAISD", res);
                 if (res.length > 0) {
+                    // insert new vote
                     await db.query(`
                     INSERT INTO pollVote
                     (pollChoice_id, user_id)
