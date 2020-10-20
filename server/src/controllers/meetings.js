@@ -287,6 +287,14 @@ router.post('/view/:id',
        * From here on it's organizer only
       */
 
+     
+      // checking if requested by organizer
+      let currMeeting = await meeting.getMeetingById(req.params.id);
+      if (req.user.profile.oid !== currMeeting.details[0].organizer_id) {
+        res.redirect(`/meetings/view/${req.params.id}`);
+      } 
+
+
       // organizer adding a new member
       if (req.body.addUser) {
         let errorMessage = 
