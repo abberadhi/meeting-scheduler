@@ -269,6 +269,7 @@ module.exports = {
     },
     "addUserToMeeting": async (userEmail, requestedBy, meetingId, req) => {
         // check if user already exist
+        let err = false;
 
         // get users id
         let usr = await db.query(`
@@ -284,10 +285,10 @@ module.exports = {
             await db.query(`
             SELECT * FROM meetingAttendees WHERE user_id = "${usr[0].id}"
             `).then(async (res) => {
-                console.log(res);
+                console.log(res, res.length > 0);
                 if (res.length > 0) {
-                    return `Warning! User already exists.`;
-
+                    
+                    err = `Warning! User already exists.`;
                 } else {
                     // insert new user into table
                     await db.query(`
@@ -296,14 +297,13 @@ module.exports = {
                     VALUES
                     (?, "${usr[0].id}", 0)
                     `, [meetingId]);
-                    return true;
                 }
             });
         } else {
-            return `Warning: Could not find user ${userEmail}, therefore ignored.`;
+            err = `Warning: Could not find user ${userEmail}, therefore ignored.`;
         }
 
 
-        return false;
+        return err;
     }
 }

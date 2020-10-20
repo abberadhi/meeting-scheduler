@@ -294,8 +294,7 @@ router.post('/view/:id',
           req.body.email, 
           req.user.profile.oid, 
           req.params.id, 
-          req, 
-          res);
+          req);
 
         console.log("errorMessage", errorMessage);
 
