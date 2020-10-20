@@ -303,7 +303,25 @@ module.exports = {
             err = `Warning: Could not find user ${userEmail}, therefore ignored.`;
         }
 
-
         return err;
+    },
+    "removeMeetingById": async (m_id) => {
+        // will remove a meeting and everything associated
+        await db.query(`
+            START TRANSACTION;
+
+            DELETE pollVote
+            FROM pollVote
+            INNER JOIN pollChoice
+            ON pollChoice.id = pollVote.pollChoice_id
+            WHERE pollChoice.meeting_id = ?;
+
+            DELETE FROM pollChoice WHERE meeting_id = ?;
+            DELETE FROM meetingAttendees WHERE meeting_id = ?;
+
+            DELETE FROM meeting WHERE id = ?;
+
+            COMMIT;
+        `, [m_id, m_id, m_id, m_id]);
     }
 }

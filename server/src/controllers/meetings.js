@@ -279,8 +279,6 @@ router.post('/view/:id',
 
       // user remove own date
 
-      // organizer removing meeting
-
       // user addming new date
       
       /** 
@@ -291,6 +289,7 @@ router.post('/view/:id',
       let currMeeting = await meeting.getMeetingById(req.params.id);
       if (req.user.profile.oid !== currMeeting.details[0].organizer_id) {
         res.redirect(`/meetings/view/${req.params.id}`);
+        return;
       } 
      
 
@@ -312,7 +311,16 @@ router.post('/view/:id',
             message: errorMessage
           });
         }
-        
+      }
+
+      // organizer removing meeting
+      
+      if (req.body.removeMeeting) {
+        await meeting.removeMeetingById(req.params.id);
+        req.flash('success_msg', {
+          message: "Meeting removes successfully."
+        });
+        res.redirect(`/meetings`);
       }
 
       res.redirect(`/meetings/view/${req.params.id}`);
