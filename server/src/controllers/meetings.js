@@ -272,28 +272,38 @@ router.post('/view/:id',
       if (req.body.vote) {
         await meeting.vote(req.body.time, req.user.profile.oid, req.params.id)
       }
-
-      // check if vote is 
-
-      // organizer setting date as final
-
+ 
       // user remove own date
-
+      
       // user addming new date
+
+      // user leaving meeting
+
+      if (req.body.leaveMeeting) {
+        await meeting.leaveMeeting(
+          req.params.id, 
+          req.user.profile.oid
+        );
+        req.flash('success_msg', {
+          message: "You left the meeting."
+        });
+        res.redirect(`/meetings`);
+      }
       
       /** 
        * From here on it's organizer only
-      */
-
+       */
+      
       // checking if requested by organizer
       let currMeeting = await meeting.getMeetingById(req.params.id);
       if (req.user.profile.oid !== currMeeting.details[0].organizer_id) {
         res.redirect(`/meetings/view/${req.params.id}`);
         return;
       } 
-     
-
-
+      
+      // organizer setting date as final
+      
+      
       // organizer adding a new member
       if (req.body.addUser) {
         let errorMessage = 

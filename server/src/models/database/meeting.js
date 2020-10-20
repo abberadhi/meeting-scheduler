@@ -323,5 +323,23 @@ module.exports = {
 
             COMMIT;
         `, [m_id, m_id, m_id, m_id]);
+    },
+
+    "leaveMeeting": async (m_id, u_id) => {
+        await db.query(`
+            DELETE pollVote
+            FROM pollVote
+            INNER JOIN pollChoice
+            ON pollChoice.id = pollVote.pollChoice_id
+            WHERE 
+            pollChoice.meeting_id = ? AND 
+            pollVote.user_id = "${u_id}"; 
+
+            DELETE FROM meetingAttendees 
+            WHERE 
+                meeting_id = ? AND
+                user_id = "${u_id}"
+                ;
+        `, [m_id, m_id]);
     }
 }
