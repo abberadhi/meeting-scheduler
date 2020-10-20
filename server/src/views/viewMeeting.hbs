@@ -8,13 +8,13 @@
       <hr>
         <p class="align-items-right text-right">Created: {{readableDate meeting.details.[0].creation_date}}</p>
         <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4 spacing-1em">
         <h5>Details:</h5>
         <p><i class="fas fa-clock"></i> <b>{{finalDate meeting.pollChoices}}</b></p>
         <p><i class="fas fa-map-marker-alt"></i> {{meeting.details.[0].location}}</p>
         <p><i class="fas fa-scroll"></i> {{meeting.details.[0].description}}</p>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-8 spacing-1em">
     <div class="col-md-4"></div>
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -41,7 +41,7 @@
       </div>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 spacing-1em">
 
       <h5>Attendees: 
         {{#if (ifEquals meeting.details.[0].organizer_id user.oid)}} 
@@ -68,9 +68,9 @@
     </div>
   </div>
     {{#if (ifEquals meeting.details.[0].organizer_id user.oid)}}
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#removeMeeting">Remove meeting</button> 
+    <button type="button" class="spacing-1em btn btn-danger" data-toggle="modal" data-target="#removeMeeting">Remove meeting</button> 
     {{else}}
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#leaveMeeting">Leave this meeting</button> 
+    <button type="button" class="spacing-1em btn btn-danger" data-toggle="modal" data-target="#leaveMeeting">Leave this meeting</button> 
     {{/if}}
 </div>
 
@@ -108,7 +108,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i>WARNING!</h5>
+        <h5 class="modal-title" id="exampleModalLabel">WARNING!</h5>
         <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -134,7 +134,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i>WARNING!</h5>
+        <h5 class="modal-title" id="exampleModalLabel">WARNING!</h5>
         <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
