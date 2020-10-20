@@ -266,5 +266,44 @@ module.exports = {
 
 
         }
+    },
+    "addUserToMeeting": async (userEmail, requestedBy, meetingId, req) => {
+        // check if user already exist
+
+        // get users id
+        let usr = await db.query(`
+        SELECT id FROM users WHERE email = ?;
+        `, [userEmail]);
+
+        console.log("get users id", usr);
+
+        // if user exists
+        if (usr.length > 0) {
+
+            // check if user already added to the meeting
+            await db.query(`
+            SELECT * FROM meetingAttendees WHERE user_id = "${usr[0].id}"
+            `).then(async (res) => {
+                console.log(res);
+                if (res.length > 0) {
+                    return `Warning! User already exists.`;
+
+                } else {
+                    // insert new user into table
+                    await db.query(`
+                    INSERT INTO meetingAttendees 
+                    (meeting_id, user_id, seen)
+                    VALUES
+                    (?, "${usr[0].id}", 0)
+                    `, [meetingId]);
+                    return true;
+                }
+            });
+        } else {
+            return `Warning: Could not find user ${userEmail}, therefore ignored.`;
+        }
+
+
+        return false;
     }
 }

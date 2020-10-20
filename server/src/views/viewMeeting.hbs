@@ -42,7 +42,11 @@
       </div>
     </div>
     <div class="col-md-3">
-      <h5>Attendees:</h5>
+
+      <h5>Attendees: 
+        {{#if (ifEquals meeting.details.[0].organizer_id user.oid)}} 
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUser"><i class="fas fa-user-plus"></i></button> 
+        {{/if}}</h5>
 
       {{#each meeting.attendees}}
       <div style="margin-bottom: 2em;" class="attendees-list">
@@ -64,6 +68,34 @@
     </div>
   </div>
 </div>
+
+
+<!-- Add user Modal -->
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user"></i> Add attende</h5>
+        <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" name="addUser" value="1" class="btn btn-primary">Add</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
   $(function () {
   $('[data-toggle="tooltip"]').tooltip()

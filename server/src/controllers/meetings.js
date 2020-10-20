@@ -268,12 +268,45 @@ router.post('/view/:id',
 
       console.log("votes ", req.body);
 
-      // if vote button clicked
+      // user voting
       if (req.body.vote) {
         await meeting.vote(req.body.time, req.user.profile.oid, req.params.id)
       }
 
+      // check if vote is 
+
+      // organizer setting date as final
+
+      // user remove own date
+
+      // organizer removing meeting
+
+      // user addming new date
       
+      /** 
+       * From here on it's organizer only
+      */
+
+      // organizer adding a new member
+      if (req.body.addUser) {
+        let errorMessage = 
+        await meeting.addUserToMeeting(
+          req.body.email, 
+          req.user.profile.oid, 
+          req.params.id, 
+          req, 
+          res);
+
+        console.log("errorMessage", errorMessage);
+
+        // attach error message
+        if (errorMessage) {
+          req.flash('error_msg', {
+            message: errorMessage
+          });
+        }
+        
+      }
 
       res.redirect(`/meetings/view/${req.params.id}`);
     }
