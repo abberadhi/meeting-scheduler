@@ -328,7 +328,7 @@ router.post('/view/:id',
       if (req.body.removeMeeting) {
         await meeting.removeMeetingById(req.params.id);
         req.flash('success_msg', {
-          message: "Meeting removes successfully."
+          message: "Meeting removed successfully."
         });
         res.redirect(`/meetings`);
       }
