@@ -206,8 +206,6 @@ router.get('/view/:id',
           })
       }
 
-      console.log(params.meeting.attendees)
-
 
       res.render('viewMeeting', params);
     }
@@ -266,8 +264,6 @@ router.post('/view/:id',
         res.redirect('/meetings');
       }
 
-      console.log("votes ", req.body);
-
       // user voting
       if (req.body.vote) {
         await meeting.vote(req.body.time, req.user.profile.oid, req.params.id)
@@ -316,8 +312,6 @@ router.post('/view/:id',
           req.user.profile.oid, 
           req.params.id, 
           req);
-
-        console.log("errorMessage", errorMessage);
 
         // attach error message
         if (errorMessage) {

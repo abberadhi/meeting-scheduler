@@ -62,7 +62,6 @@ module.exports = {
             }
 
             for (let i = 0; i < attendees.length; i++) {
-                console.log("Checking: ", attendees[i]);
                 
                 // check if user is registered
                 // get the user;
@@ -221,15 +220,10 @@ module.exports = {
 
         };
 
-        console.log("meeting", meeting)
-
 
         return meeting;
     },
     "vote": async (votes, user, meet_id) => {
-        console.log(votes);
-
-
 
         // remove pollvotes of user on meeting
         await db.query(`
@@ -250,7 +244,6 @@ module.exports = {
         // insert new votes
         for (let i = 0; i < votes.length; i++) {
             // check if meeting has that pollChoice
-            console.log("vote", votes[i]);
 
             await db.query(`SELECT * FROM pollChoice
             WHERE id = ? AND meeting_id = ?`, [votes[i], meet_id]).then(async (res) => {
@@ -276,8 +269,6 @@ module.exports = {
         SELECT id FROM users WHERE email = ?;
         `, [userEmail]);
 
-        console.log("get users id", usr);
-
         // if user exists
         if (usr.length > 0) {
 
@@ -285,7 +276,6 @@ module.exports = {
             await db.query(`
             SELECT * FROM meetingAttendees WHERE user_id = "${usr[0].id}"
             `).then(async (res) => {
-                console.log(res, res.length > 0);
                 if (res.length > 0) {
                     
                     err = `Warning! User already exists.`;

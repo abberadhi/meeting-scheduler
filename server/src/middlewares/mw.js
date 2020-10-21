@@ -96,7 +96,6 @@ module.exports = (app) => {
     // get final date, returns message if no date finalized
     hbs.registerHelper('finalDate', function(choices) {
         for (let i = 0; i < choices.length; i++) {
-            console.log(choices[i]);
             if (choices[i].final) {
                 return moment(choices[i].meeting_date_start).utcOffset(2).format('LL HH:mm');
             }
@@ -126,7 +125,6 @@ module.exports = (app) => {
     });
 
     hbs.registerHelper('decrement', function(value) {
-        console.log(value);
         return value-1
     });
     

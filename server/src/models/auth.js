@@ -78,7 +78,6 @@ async function signInComplete(iss, sub, profile, accessToken, refreshToken, para
       // add user to database if they don't exist
       if (!await userModel.userExists(profile.oid)) {
         await userModel.registerUser(profile.oid, profile.displayName, profile['email']);
-        console.log("User " + profile.displayName + " created");
       }
 
     }
