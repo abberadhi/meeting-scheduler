@@ -9,7 +9,8 @@ CREATE TABLE users (
     id VARCHAR(255),
     displayName VARCHAR (255),
     email VARCHAR (255),
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    created_at int(11),
+    timezone int DEFAULT 2,
 
     PRIMARY KEY (id)
 );
@@ -25,7 +26,7 @@ CREATE TABLE meeting (
     description TEXT,
     organizer_id VARCHAR(255),
     location VARCHAR(255),
-    creation_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    creation_date int(11),
     negotiable TINYINT(1),
 
     FOREIGN KEY(organizer_id) 
@@ -49,8 +50,8 @@ CREATE TABLE pollChoice (
     id int NOT NULL AUTO_INCREMENT,
     meeting_id int,
     added_by VARCHAR(255),
-    meeting_date_start DATETIME,
-    meeting_date_end DATETIME,
+    meeting_date_start int(11),
+    meeting_date_end int(11),
     final TINYINT(1),
 
     FOREIGN KEY(added_by)

@@ -38,12 +38,14 @@ module.exports = {
             title, 
             description, 
             organizer_id, 
-            location) 
+            location,
+            creation_date) 
             VALUES (
                 ?, 
                 ?, 
                 "${organizer}", 
-                ?);
+                ?,
+                UNIX_TIMESTAMP(NOW()));
         SELECT LAST_INSERT_ID()`, [
             title,
             description,
@@ -96,14 +98,14 @@ module.exports = {
             // add the suggested times
             // if array = multiple dates
             if (!Array.isArray(meetingDate)) {
-                let start = new Date(`${meetingDate} ${meetingTimeStart}`).toISOString().slice(0, 19).replace('T', ' ');;
-                let end = new Date(`${meetingDate} ${meetingTimeEnd}`).toISOString().slice(0, 19).replace('T', ' ');;
+                let start = new Date(`${meetingDate} ${meetingTimeStart}`).getTime() / 1000;
+                let end = new Date(`${meetingDate} ${meetingTimeEnd}`).getTime() / 1000;
 
                 await db.query(`
                 INSERT INTO pollChoice
                     (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
                 VALUES
-                    (?, "${organizer}", "${start}", "${end}", ?);
+                    (?, "${organizer}", ${start}, ${end}, ?);
                     SELECT LAST_INSERT_ID();`, [meetingID, 1]).then(async (res) => {
                         await db.query(`INSERT INTO pollVote 
                         (pollChoice_id, user_id) 
@@ -116,8 +118,8 @@ module.exports = {
                     let start;
                     let end;
                     try {
-                        start = new Date(`${meetingDate[i]} ${meetingTimeStart[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
-                        end = new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}`).toISOString().slice(0, 19).replace('T', ' ');;
+                        start = new Date(`${meetingDate[i]} ${meetingTimeStart[i]}`).getTime() / 1000;
+                        end = new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}`).getTime() / 1000;
                     } catch (err) {
                         console.log("Error! ", err);
                         continue;
@@ -127,7 +129,7 @@ module.exports = {
                     INSERT INTO pollChoice
                         (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
                     VALUES
-                        (?, "${organizer}", "${start}", "${end}", ?);
+                        (?, "${organizer}", ${start}, ${end}, ?);
                         SELECT LAST_INSERT_ID();`, [meetingID, 0]).then(async (res) => {
                             await db.query(`INSERT INTO pollVote 
                             (pollChoice_id, user_id) 

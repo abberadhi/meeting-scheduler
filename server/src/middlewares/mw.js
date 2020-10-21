@@ -56,21 +56,33 @@ module.exports = (app) => {
     var moment = require('moment');
     // Helper to format date/time sent by Graph & MySQL
     hbs.registerHelper('eventDate', function(dateTime) {
-        return moment(dateTime).utcOffset(4*60).format('YYYY-MM-DD');
+        if (isNaN(dateTime)) {
+            return moment(dateTime).utcOffset(2*60).format('YYYY-MM-DD');
+        }
+        return moment(dateTime*1000).utcOffset(2*60).format('YYYY-MM-DD');
     });
 
     // Helper to format date/time sent by Graph & MySQL
     hbs.registerHelper('eventTime', function(dateTime) {
-        return moment(dateTime).utcOffset(4*60).format('hh:mm:ss');
+        if (isNaN(dateTime)) {
+            return moment(dateTime).utcOffset(2*60).format('hh:mm:ss');
+        }
+        return moment(dateTime*1000).utcOffset(2*60).format('hh:mm:ss');
     });
 
     hbs.registerHelper('readableDate', function(dateTime) {
-        return moment(dateTime).utcOffset(4*60).format('LL HH:mm');
+        if (isNaN(dateTime)) {
+            return moment(dateTime).utcOffset(2*60).format('LL HH:mm');
+        }
+        return moment(dateTime*1000).utcOffset(2*60).format('LL HH:mm');
     });
 
     // get time in HH:mm
     hbs.registerHelper('time24', function(dateTime) {
-        return moment(dateTime).utcOffset(4*60).format('HH:mm');
+        if (isNaN(dateTime)) {
+            return moment(dateTime).utcOffset(2*60).format('HH:mm');
+        }
+        return moment(dateTime*1000).utcOffset(2*60).format('HH:mm');
     });
 
     // handler for joining attendes with linebreak
@@ -95,9 +107,13 @@ module.exports = (app) => {
 
     // get final date, returns message if no date finalized
     hbs.registerHelper('finalDate', function(choices) {
+        
         for (let i = 0; i < choices.length; i++) {
             if (choices[i].final) {
-                return moment(choices[i].meeting_date_start).utcOffset(4*60).format('LL HH:mm');
+                if (isNaN(choices[i].meeting_date_start)) {
+                    return moment(choices[i].meeting_date_start).utcOffset(2*60).format('LL HH:mm');
+                }
+                return moment(choices[i].meeting_date_start * 1000).utcOffset(2*60).format('LL HH:mm');
             }
         }
 
