@@ -153,6 +153,7 @@ router.get('/view/:id',
 
       // Get the access token
       var accessToken;
+      let finalMeetings;
       try {
         accessToken = await tokens.getAccessToken(req);
       } catch (err) {
@@ -164,9 +165,11 @@ router.get('/view/:id',
 
       if (accessToken && accessToken.length > 0) {
         try {
-          // Get the events
-          var events = await graph.getEvents(accessToken);
-          params.events = events.value;
+                // get meetings
+          finalMeetings = {
+            meetings: await meeting.getFinalMeetings(req.user.profile.oid),
+            events: await graph.getEvents(accessToken)
+          }
         } catch (err) {
           console.log(err);
           req.flash('error_msg', {
@@ -185,6 +188,8 @@ router.get('/view/:id',
         });
         res.redirect('/meetings');
       }
+
+      params.finalMeetings = finalMeetings;
       
       // set user to seen
       await meeting.setSeenMeeting(req.user.profile.oid, req.params.id);
@@ -269,9 +274,6 @@ router.post('/view/:id',
         await meeting.vote(req.body.time, req.user.profile.oid, req.params.id)
       }
  
-      // user remove own date
-
-
       
       // user addming new date
 

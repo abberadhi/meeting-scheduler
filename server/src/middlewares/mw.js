@@ -102,6 +102,29 @@ module.exports = (app) => {
         return names.join("<br>");
     });
 
+    // handler for checking if two dates are same day
+    hbs.registerHelper('sameDay', function(this_m, this_d, all) {
+        console.log({this_m, this_d, all});
+
+        for (let i = 0; i < all.meetings.length; i++) {
+            if (all.meetings[i].id == this_m) continue;
+            if (Math.floor(all.meetings[i].meeting_date_start / (24 * 60 * 60)) == 
+            Math.floor(this_d / (24 * 60 * 60))) {
+                return 1;
+            }
+        }
+
+        for (let i = 0; i < all.events.value.length; i++) {
+            let epoch = new Date(all.events.value[i].start.dateTime).getTime() / 1000;
+
+            if (Math.floor(epoch / (24 * 60 * 60)) == 
+            Math.floor(this_d / (24 * 60 * 60))) {
+                return 1;
+            }
+        }
+
+    });
+
     // check if user already voted
     hbs.registerHelper('hasVoted', function(names, user) {
         for (let i = 0; i < names.length; i++) {
