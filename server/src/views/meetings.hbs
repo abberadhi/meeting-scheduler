@@ -22,10 +22,9 @@
           {{#if this.meeting_date_end}}
           {
             title: '{{this.title}}',
-            start: '{{eventDate this.meeting_date_start user.tz}}',
-            end: '{{eventDate this.meeting_date_end user.tz}}',
+            start: '{{eventDate this.meeting_date_start user.tz}} {{time24 this.meeting_date_start user.tz}}',
             color: 'blue',
-            url: '/meetings'
+            url: '/meetings/view/{{this.id}}'
           },
           {{/if}}
           {{/each}}
