@@ -341,5 +341,25 @@ module.exports = {
                 user_id = "${u_id}"
                 ;
         `, [m_id, m_id]);
+    },
+    "pollFinal": async (pollChoice, m_id) => {
+        // check if pollchoice exists in meeting id
+        await db.query(`
+        SELECT * from pollChoice WHERE
+        id = ? AND
+        meeting_id = ?;
+        `,
+        [pollChoice, m_id]).then(async (res) => {
+            if (res.length > 0) {
+                await db.query(`
+                UPDATE pollChoice SET 
+                final = 1 
+                WHERE id = ? AND
+                meeting_id = ?;
+                `, [pollChoice, m_id])
+            }
+        });
+
+
     }
 }

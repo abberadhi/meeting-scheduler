@@ -302,6 +302,10 @@ router.post('/view/:id',
       } 
       
       // organizer setting date as final
+
+      if (req.body.pollFinal) {
+        await meeting.pollFinal(req.body.pollFinal, req.params.id);
+      }
       
       
       // organizer adding a new member

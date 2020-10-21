@@ -369,11 +369,21 @@ input:checked + .slider:before {
 }
 
 .box p {
+	display: inline-block;
+	margin: 0 !important;
+}
+
+.box .dropdown-menu {
+	margin-top: -31px;
+}
+
+.box .thisp {
 	font-size: 1.3em;
 	padding-right: 25px;
 	position: absolute;
 	right: 0;
 	margin-bottom: 0;
+	display: inline-block;
 }
 
 .box input {

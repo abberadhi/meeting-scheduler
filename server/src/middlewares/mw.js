@@ -102,7 +102,7 @@ module.exports = (app) => {
             }
         }
 
-        return "To be determined.";
+        return false;
     });
 
     // return length of array
