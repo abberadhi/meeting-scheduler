@@ -87,7 +87,7 @@
           <a class="meeting-link" href="/meetings/view/{{this.id}}">
             <div class="meeting-list ended">
             <h4>{{this.title}}</h4>
-            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start user.tz}}{{else}}To be determined.{{/if}}<br>
+            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start ../user.tz}}{{else}}To be determined.{{/if}}<br>
             <i class="fas fa-map-marker"></i> {{this.location}}<br>
             <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
             {{#if this.voted }}
