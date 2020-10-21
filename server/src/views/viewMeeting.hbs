@@ -28,8 +28,8 @@
                   <span class="check"></span>
                   <label for="{{this.id}}">{{eventDate this.meeting_date_start ../user.tz}} ({{time24 this.meeting_date_start ../user.tz}} - {{time24 this.meeting_date_end ../user.tz}})</label>
                   <div class="thisp">
-                  {{#if (sameDay ../meeting.details.[0].id this.meeting_date_start ../finalMeetings)}}<i class="fas fa-exclamation" data-toggle="tooltip" data-placement="left" title="You have another event the same day."></i>{{/if}}
                   {{#if this.final}}<i class="fas fa-check" data-toggle="tooltip" data-placement="left" title="Final"></i>{{/if}}
+                  {{#if (sameDay ../meeting.details.[0].id this.meeting_date_start ../finalMeetings)}}<i class="fas fa-exclamation" data-toggle="tooltip" data-placement="left" title="You have another event the same day."></i>{{/if}}
                   <p data-toggle="tooltip" data-placement="left" data-html="true"  title="{{joinAttendees this.votes}}"><i class="fas fa-user"></i> +{{lengthArray this.votes}}</p>
                   {{#if (ifEquals meeting.details.[0].organizer_id user.oid)}} 
                   {{#unless (finalDate ../meeting.pollChoices ../user.tz)}}
