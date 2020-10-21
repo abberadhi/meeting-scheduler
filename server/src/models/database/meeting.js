@@ -157,7 +157,7 @@ module.exports = {
         pc.final,
         a.seen,
         (SELECT COUNT(*) FROM meetingAttendees WHERE meeting_id = m.id) as attendeesCounter,
-        (SELECT TIMEDIFF(pc.meeting_date_end, now()) > 0) as active,
+        (SELECT (pc.meeting_date_end - UNIX_TIMESTAMP(NOW())) > 0) as active,
         (SELECT COUNT(*) FROM pollVote
         LEFT JOIN pollChoice
         ON pollVote.pollChoice_id = pollChoice.id
