@@ -14,6 +14,11 @@ var fs = require('fs');
 var passport = require('passport');
 var user = require('../models/database/user');
 
+function isUrl(s) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(s);
+ }
+
 module.exports = (app) => {
 
     app.use(morgan('combined'));
@@ -145,6 +150,14 @@ module.exports = (app) => {
 
     hbs.registerHelper('decrement', function(value) {
         return value-1
+    });
+    
+    // handler for if location is link
+    hbs.registerHelper('isLink', function(value) {
+        if (isUrl(value)) {
+            return `<a target="_blank" href="${value}">${value}</a>`;
+        }
+        return value;
     });
     
 

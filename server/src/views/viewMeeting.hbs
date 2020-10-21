@@ -10,7 +10,7 @@
       <div class="col-md-4 spacing-1em">
         <h5>Details:</h5>
         <p><i class="fas fa-clock"></i> <b>{{#if (finalDate meeting.pollChoices user.tz)}}{{finalDate meeting.pollChoices user.tz}}{{else}}To be determined.{{/if}}</b></p>
-        <p><i class="fas fa-map-marker-alt"></i> {{meeting.details.[0].location}}</p>
+        <p><i class="fas fa-map-marker-alt"></i> {{{isLink meeting.details.[0].location}}}</p>
         <p><i class="fas fa-scroll"></i> {{meeting.details.[0].description}}</p>
       </div>
       <div class="col-md-8 spacing-1em">
