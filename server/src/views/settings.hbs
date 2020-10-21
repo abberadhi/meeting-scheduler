@@ -1,0 +1,15 @@
+
+<div style="margin-top: 5em;" class="container">
+    <h2>Settings</h2>
+    <form method="POST">
+        <h5>Select your timezone </h5>
+        <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">UTC </span>
+        </div>
+        <input style="width: 80px;" value="{{user.tz}}" id="timezone" min="-10" max="10" name="tz" type="number" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary" style="text-align: right; margin-top: 1em;">Apply</button>
+    </form>
+</div>

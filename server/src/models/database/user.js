@@ -85,5 +85,11 @@ module.exports = {
         `);
 
         return res[0].timezone;
+    },
+    "setTimezone": async (timezone, user) => {
+        await db.query(`
+        UPDATE users 
+        SET timezone = ? 
+        WHERE id = "${user}";`, [timezone]);
     }
 }
