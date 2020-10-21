@@ -29,7 +29,7 @@
                   <span class="check"></span>
                   <label for="{{this.id}}">{{eventDate this.meeting_date_start}} ({{time24 this.meeting_date_start}} - {{time24 this.meeting_date_end}})</label>
                   <div class="thisp">
-                  {{#if this.final}}<i class="fas fa-check" data-toggle="tooltip" data-placement="top" title="Final"></i>{{/if}}
+                  {{#if this.final}}<i class="fas fa-check" data-toggle="tooltip" data-placement="left" title="Final"></i>{{/if}}
                   <p data-toggle="tooltip" data-placement="left" data-html="true"  title="{{joinAttendees this.votes}}"><i class="fas fa-user"></i> +{{lengthArray this.votes}}</p>
                   {{#if (ifEquals meeting.details.[0].organizer_id user.oid)}} 
                   {{#unless (finalDate ../meeting.pollChoices)}}
