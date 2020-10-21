@@ -146,6 +146,17 @@ module.exports = {
         });
     },
     "getFinalMeetings": async (id) => {
+        // let sqlNew = ``;
+        // let sqlFinal = ``;
+        // let sqlNotDetermined = ``;
+
+
+        // let res = {
+        //     new: await db.query(sqlNew),
+        //     final: null,
+        //     notDetermined: null
+        // }
+
         let res = await db.query(`
         SELECT DISTINCT
         m.id,
@@ -154,10 +165,9 @@ module.exports = {
         a.user_id,
         (SELECT meeting_date_start FROM pollChoice WHERE final = 1 AND meeting_id = m.id) as meeting_date_start,
         (SELECT meeting_date_end FROM pollChoice WHERE final = 1 AND meeting_id = m.id) as meeting_date_end,
-        pc.final,
         a.seen,
         (SELECT COUNT(*) FROM meetingAttendees WHERE meeting_id = m.id) as attendeesCounter,
-        (SELECT (pc.meeting_date_end - UNIX_TIMESTAMP(NOW())) > 0) as active,
+        (SELECT MAX((pollChoice.meeting_date_end - UNIX_TIMESTAMP(NOW())) > 0) FROM pollChoice WHERE pollChoice.meeting_id = m.id) as active,
         (SELECT COUNT(*) FROM pollVote
         LEFT JOIN pollChoice
         ON pollVote.pollChoice_id = pollChoice.id
@@ -168,8 +178,11 @@ module.exports = {
         ON m.id = a.meeting_id
         INNER JOIN pollChoice AS pc
         ON pc.meeting_id = m.id
-        WHERE a.user_id = "${id}";
+        WHERE a.user_id = "${id}" 
+        GROUP BY m.id, a.seen, pc.meeting_date_end, pc.meeting_date_start;
         `);
+
+        
         
         return res;
     },

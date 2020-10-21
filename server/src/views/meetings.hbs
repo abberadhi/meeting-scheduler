@@ -1,6 +1,7 @@
 
 <link href='/js/calendar/main.css' rel='stylesheet' />
 <script src='/js/calendar/main.js'></script>
+
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -18,7 +19,7 @@
           },
           {{/each}}
           {{#each finalMeetings}}
-          {{#if this.final}}
+          {{#if this.meeting_date_end}}
           {
             title: '{{this.title}}',
             start: '{{eventDate this.meeting_date_start user.tz}}',
