@@ -270,8 +270,26 @@ router.post('/view/:id',
       }
  
       // user remove own date
+
+
       
       // user addming new date
+
+      if (req.body.addDate) {
+        if (req.body.meetingDate && req.body.meetingTimeStart && req.body.meetingTimeEnd) {
+          await meeting.addnewDate(
+            req.user.profile.oid, 
+            req.params.id,
+            req.body.meetingDate,
+            req.body.meetingTimeStart,
+            req.body.meetingTimeEnd
+          );
+        } else {
+          req.flash('error_msg', {
+            message: "Something went wrong, please try again"
+          });
+        }
+      }
 
       // user leaving meeting
 

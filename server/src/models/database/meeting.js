@@ -351,7 +351,16 @@ module.exports = {
                 `, [pollChoice, m_id])
             }
         });
+    },
+    "addnewDate": async (u_id, m_id, m_date, m_start, m_end) => {
+        let start = new Date(`${m_date} ${m_start}`).getTime() / 1000;
+        let end = new Date(`${m_date} ${m_end}`).getTime() / 1000;
 
-
+        await db.query(`
+            INSERT INTO pollChoice
+            (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
+            VALUES
+            (?, "${u_id}", ?, ?, 0);
+        `, [m_id, start, end]);
     }
 }

@@ -2,7 +2,6 @@
 <div style="margin-top: 5em;" class="container">
   <div class="row">
     <div class="col-md-9">
-      
 
       <h4>{{meeting.details.[0].title}}</h4>
       <hr>
@@ -36,8 +35,7 @@
                     <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                     <div class="dropdown">
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item" name="pollFinal" value="{{this.id}}">Make final date</button>
-                            <button class="dropdown-item" name="pollRemove" value="{{this.id}}" style="color: red;">Delete choice</button>
+                            <button class="dropdown-item" name="pollFinal" value="{{this.id}}" style="color: green;">Make final date</button>
                         </div>
                     </div>
                     {{/unless}}
@@ -49,7 +47,7 @@
               <div class="panel-footer text-center">
                   <button type="submit" name="vote" value="1" class="btn btn-primary btn-block btn-sm">
                       Vote</button>
-                  <a href="#" class="small">None of these times fit me</a>
+                  {{#unless (finalDate meeting.pollChoices user.tz)}}<a href="#" data-toggle="modal" data-target="#addDate" class="small">None of these times fit me</a> {{/unless}}
               </div>
             </form>
         </div>
@@ -115,6 +113,51 @@
   </div>
 </div>
 
+<!-- add new poll choice modal -->
+<div class="modal fade" id="addDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select date</h5>
+        <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+                  <label for="meetingDate">Date:</label>
+                  <br>
+                  <input type="date" id="meetingDate"
+                     name="meetingDate">
+                  <br>
+                  <br>
+                  <div class="row align-items-center">
+                     <div class="col-sm-6">
+                        <label for="meetingTimeStart">Starts:</label>
+                        <br>
+                        <input type="time" id="meetingTimeStart"
+                           name="meetingTimeStart">
+                        <br>
+                     </div>
+                     <div class="col-sm-6">
+                        <label for="meetingTimeEnd">Ends:</label>
+                        <br>
+                        <input type="time" id="meetingTimeEnd"
+                           name="meetingTimeEnd">
+                     </div>
+                  </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+        <button name="addDate" value="1" class="btn btn-primary">Add</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
 
 <!-- remove meeting modal -->
 {{#if (ifEquals meeting.details.[0].organizer_id user.oid)}}
