@@ -56,21 +56,21 @@ module.exports = (app) => {
     var moment = require('moment');
     // Helper to format date/time sent by Graph & MySQL
     hbs.registerHelper('eventDate', function(dateTime) {
-        return moment(dateTime).utcOffset(2).format('YYYY-MM-DD');
+        return moment(dateTime).utcOffset(4*60).format('YYYY-MM-DD');
     });
 
     // Helper to format date/time sent by Graph & MySQL
     hbs.registerHelper('eventTime', function(dateTime) {
-        return moment(dateTime).utcOffset(2).format('hh:mm:ss');
+        return moment(dateTime).utcOffset(4*60).format('hh:mm:ss');
     });
 
     hbs.registerHelper('readableDate', function(dateTime) {
-        return moment(dateTime).utcOffset(2).format('LL HH:mm');
+        return moment(dateTime).utcOffset(4*60).format('LL HH:mm');
     });
 
     // get time in HH:mm
     hbs.registerHelper('time24', function(dateTime) {
-        return moment(dateTime).utcOffset(2).format('HH:mm');
+        return moment(dateTime).utcOffset(4*60).format('HH:mm');
     });
 
     // handler for joining attendes with linebreak
@@ -97,7 +97,7 @@ module.exports = (app) => {
     hbs.registerHelper('finalDate', function(choices) {
         for (let i = 0; i < choices.length; i++) {
             if (choices[i].final) {
-                return moment(choices[i].meeting_date_start).utcOffset(2).format('LL HH:mm');
+                return moment(choices[i].meeting_date_start).utcOffset(4*60).format('LL HH:mm');
             }
         }
 
