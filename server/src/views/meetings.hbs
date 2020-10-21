@@ -12,8 +12,8 @@
           {{#each events}}
           {
             title: '{{this.subject}}',
-            start: '{{eventDate this.start.dateTime}}',
-            end: '{{eventDate this.end.dateTime}}',
+            start: '{{eventDate this.start.dateTime user.tz}}',
+            end: '{{eventDate this.end.dateTime user.tz}}',
             color: '#add8e6'
           },
           {{/each}}
@@ -21,8 +21,8 @@
           {{#if this.final}}
           {
             title: '{{this.title}}',
-            start: '{{eventDate this.meeting_date_start}}',
-            end: '{{eventDate this.meeting_date_end}}',
+            start: '{{eventDate this.meeting_date_start user.tz}}',
+            end: '{{eventDate this.meeting_date_end user.tz}}',
             color: 'blue',
             url: '/meetings'
           },
@@ -46,7 +46,7 @@
           <a class="meeting-link" href="/meetings/view/{{this.id}}">
           <div class="meeting-list">
             <h4>{{this.title}}</h4>
-            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start}}{{else}}To be determined.{{/if}}<br>
+            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start user.tz}}{{else}}To be determined.{{/if}}<br>
             <i class="fas fa-map-marker"></i> {{this.location}}<br>
             <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
             {{#if this.voted }}
@@ -66,7 +66,7 @@
           <a class="meeting-link" href="/meetings/view/{{this.id}}">
           <div class="meeting-list">
             <h4>{{this.title}}</h4>
-            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start}}{{else}}To be determined.{{/if}}<br>
+            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start user.tz}}{{else}}To be determined.{{/if}}<br>
             <i class="fas fa-map-marker"></i> {{this.location}}<br>
             <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
             {{#if this.voted }}
@@ -87,7 +87,7 @@
           <a class="meeting-link" href="/meetings/view/{{this.id}}">
             <div class="meeting-list ended">
             <h4>{{this.title}}</h4>
-            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start}}{{else}}To be determined.{{/if}}<br>
+            <p><i class="fas fa-calendar-check"></i> {{#if this.meeting_date_start}}{{readableDate this.meeting_date_start user.tz}}{{else}}To be determined.{{/if}}<br>
             <i class="fas fa-map-marker"></i> {{this.location}}<br>
             <i class="fas fa-user"></i> You & {{decrement this.attendeesCounter}} other(s)<br>
             {{#if this.voted }}

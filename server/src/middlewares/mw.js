@@ -12,6 +12,7 @@ var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fs = require('fs');
 var passport = require('passport');
+var user = require('../models/database/user');
 
 module.exports = (app) => {
 
@@ -53,36 +54,38 @@ module.exports = (app) => {
     app.set('view engine', 'hbs');
 
     var hbs = require('hbs');
+    
     var moment = require('moment');
+
     // Helper to format date/time sent by Graph & MySQL
-    hbs.registerHelper('eventDate', function(dateTime) {
+    hbs.registerHelper('eventDate', function(dateTime, tz) {
         if (isNaN(dateTime)) {
-            return moment(dateTime).utcOffset(2*60).format('YYYY-MM-DD');
+            return moment(dateTime).utcOffset(tz*60).format('YYYY-MM-DD');
         }
-        return moment(dateTime*1000).utcOffset(2*60).format('YYYY-MM-DD');
+        return moment(dateTime*1000).utcOffset(tz*60).format('YYYY-MM-DD');
     });
 
     // Helper to format date/time sent by Graph & MySQL
-    hbs.registerHelper('eventTime', function(dateTime) {
+    hbs.registerHelper('eventTime', function(dateTime, tz) {
         if (isNaN(dateTime)) {
-            return moment(dateTime).utcOffset(2*60).format('hh:mm:ss');
+            return moment(dateTime).utcOffset(tz*60).format('hh:mm:ss');
         }
-        return moment(dateTime*1000).utcOffset(2*60).format('hh:mm:ss');
+        return moment(dateTime*1000).utcOffset(tz*60).format('hh:mm:ss');
     });
 
-    hbs.registerHelper('readableDate', function(dateTime) {
+    hbs.registerHelper('readableDate', function(dateTime, tz) {
         if (isNaN(dateTime)) {
-            return moment(dateTime).utcOffset(2*60).format('LL HH:mm');
+            return moment(dateTime).utcOffset(tz*60).format('LL HH:mm');
         }
-        return moment(dateTime*1000).utcOffset(2*60).format('LL HH:mm');
+        return moment(dateTime*1000).utcOffset(tz*60).format('LL HH:mm');
     });
 
     // get time in HH:mm
-    hbs.registerHelper('time24', function(dateTime) {
+    hbs.registerHelper('time24', function(dateTime, tz) {
         if (isNaN(dateTime)) {
-            return moment(dateTime).utcOffset(2*60).format('HH:mm');
+            return moment(dateTime).utcOffset(tz*60).format('HH:mm');
         }
-        return moment(dateTime*1000).utcOffset(2*60).format('HH:mm');
+        return moment(dateTime*1000).utcOffset(tz*60).format('HH:mm');
     });
 
     // handler for joining attendes with linebreak
@@ -106,14 +109,14 @@ module.exports = (app) => {
     });
 
     // get final date, returns message if no date finalized
-    hbs.registerHelper('finalDate', function(choices) {
+    hbs.registerHelper('finalDate', function(choices, tz) {
         
         for (let i = 0; i < choices.length; i++) {
             if (choices[i].final) {
                 if (isNaN(choices[i].meeting_date_start)) {
-                    return moment(choices[i].meeting_date_start).utcOffset(2*60).format('LL HH:mm');
+                    return moment(choices[i].meeting_date_start).utcOffset(tz*60).format('LL HH:mm');
                 }
-                return moment(choices[i].meeting_date_start * 1000).utcOffset(2*60).format('LL HH:mm');
+                return moment(choices[i].meeting_date_start * 1000).utcOffset(tz*60).format('LL HH:mm');
             }
         }
 
@@ -154,11 +157,12 @@ module.exports = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(function(req, res, next) {
+    app.use(async function(req, res, next) {
         // Set the authenticated user in the
         // template locals
         if (req.user) {
           res.locals.user = req.user.profile;
+          res.locals.user.tz = await user.getTimezoneById(req.user.profile.oid);
 
           // check if user has profile picture
           fs.access(`../server/src/public/avatars/${req.user.profile.oid}.png`, fs.F_OK, (err) => {

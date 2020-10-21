@@ -77,5 +77,13 @@ module.exports = {
         let res = await db.query(sql, [id]);
 
         return res[0];
+    },
+    "getTimezoneById": async(u_id) => {
+        let res = await db.query(`
+        SELECT timezone from users 
+        WHERE id = "${u_id}";
+        `);
+
+        return res[0].timezone;
     }
 }
