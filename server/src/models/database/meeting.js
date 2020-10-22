@@ -55,6 +55,10 @@ module.exports = {
                 message: `Meeting created successfully`
             });
 
+            // get user timezone
+            let tz = await db.query(`SELECT timezone FROM users WHERE id = "${u_id}";`);
+            console.log(tz);
+            tz = tz[0].timezone;
             let meetingID = res[0].insertId;
             
             // add attendees to meetingAttendees table
@@ -98,8 +102,8 @@ module.exports = {
             // add the suggested times
             // if array = multiple dates
             if (!Array.isArray(meetingDate)) {
-                let start = new Date(`${meetingDate} ${meetingTimeStart}`).getTime() / 1000;
-                let end = new Date(`${meetingDate} ${meetingTimeEnd}`).getTime() / 1000;
+                let start = (new Date(`${meetingDate} ${meetingTimeStart}Z`).getTime() + ((-(tz))*60*60*1000)) / 1000;
+                let end = (new Date(`${meetingDate} ${meetingTimeEnd}Z`).getTime() + ((-(tz))*60*60*1000)) / 1000;
 
                 await db.query(`
                 INSERT INTO pollChoice
@@ -118,8 +122,8 @@ module.exports = {
                     let start;
                     let end;
                     try {
-                        start = new Date(`${meetingDate[i]} ${meetingTimeStart[i]}`).getTime() / 1000;
-                        end = new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}`).getTime() / 1000;
+                        start = (new Date(`${meetingDate[i]} ${meetingTimeStart[i]}Z`).getTime() + ((-(tz))*60*60*1000)) / 1000;
+                        end = (new Date(`${meetingDate[i]} ${meetingTimeEnd[i]}Z`).getTime() + ((-(tz))*60*60*1000)) / 1000;
                     } catch (err) {
                         console.log("Error! ", err);
                         continue;
@@ -366,8 +370,15 @@ module.exports = {
         });
     },
     "addnewDate": async (u_id, m_id, m_date, m_start, m_end) => {
-        let start = new Date(`${m_date} ${m_start}`).getTime() / 1000;
-        let end = new Date(`${m_date} ${m_end}`).getTime() / 1000;
+        // get user timezone
+        let tz = await db.query(`SELECT timezone FROM users WHERE id = "${u_id}";`);
+        console.log(tz);
+        tz = tz[0].timezone;
+
+        let start = (new Date(`${m_date} ${m_start}Z`).getTime() + ((-(tz))*60*60*1000)) / 1000;
+        let end = (new Date(`${m_date} ${m_end}Z`).getTime() + ((-(tz))*60*60*1000)) / 1000;
+        console.log(start);
+        console.log(end);
 
         await db.query(`
             INSERT INTO pollChoice

@@ -86,6 +86,9 @@ router.post('/create',
         req
       );
 
+      console.log([        req.body.meetingDate,
+        req.body.meetingTimeStart,
+        req.body.meetingTimeEnd]);
 
       res.redirect('/meetings')
   }
@@ -278,6 +281,11 @@ router.post('/view/:id',
       // user addming new date
 
       if (req.body.addDate) {
+        console.log("input time")
+        console.log([req.body.meetingDate,
+          req.body.meetingTimeStart,
+          req.body.meetingTimeEnd]);
+
         if (req.body.meetingDate && req.body.meetingTimeStart && req.body.meetingTimeEnd) {
           await meeting.addnewDate(
             req.user.profile.oid, 
@@ -318,7 +326,6 @@ router.post('/view/:id',
       } 
       
       // organizer setting date as final
-
       if (req.body.pollFinal) {
         await meeting.pollFinal(req.body.pollFinal, req.params.id);
       }

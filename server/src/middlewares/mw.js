@@ -138,7 +138,6 @@ module.exports = (app) => {
 
     // get final date, returns message if no date finalized
     hbs.registerHelper('finalDate', function(choices, tz) {
-        
         for (let i = 0; i < choices.length; i++) {
             if (choices[i].final) {
                 if (isNaN(choices[i].meeting_date_start)) {
@@ -182,7 +181,6 @@ module.exports = (app) => {
         }
         return value;
     });
-    
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
