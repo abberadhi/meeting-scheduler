@@ -385,6 +385,12 @@ module.exports = {
             (meeting_id, added_by, meeting_date_start, meeting_date_end, final)
             VALUES
             (?, "${u_id}", ?, ?, 0);
-        `, [m_id, start, end]);
+            SELECT LAST_INSERT_ID()
+        `, [m_id, start, end]).then(async (res) => {
+            await db.query(`INSERT INTO pollVote
+            (pollChoice_id, user_id)
+            VALUES
+            (${res[0].insertId}, "${u_id}")`); 
+        });
     }
 }
