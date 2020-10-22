@@ -56,7 +56,7 @@ module.exports = {
             });
 
             // get user timezone
-            let tz = await db.query(`SELECT timezone FROM users WHERE id = "${u_id}";`);
+            let tz = await db.query(`SELECT timezone FROM users WHERE id = "${organizer}";`);
             console.log(tz);
             tz = tz[0].timezone;
             let meetingID = res[0].insertId;
