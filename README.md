@@ -51,3 +51,23 @@ mysql -uroot -p < ../dbsetup/setupdb.sql > /dev/null
 mysql -uroot -p meetx < ../dbsetup/setuptables.sql > /dev/null
 ```
 
+Next up open ``server/.env`` in your text editor and replace the uppercase values with your own credentials. 
+```
+OAUTH_APP_ID=YOUR_CLIENT_ID
+OAUTH_APP_PASSWORD=YOUR_CLIENT_SECRET
+OAUTH_REDIRECT_URI=http://localhost:8081/auth/callback
+OAUTH_SCOPES='profile offline_access user.read User.ReadBasic.All calendars.read'
+OAUTH_AUTHORITY=https://login.microsoftonline.com/common/
+OAUTH_ID_METADATA=v2.0/.well-known/openid-configuration
+OAUTH_AUTHORIZE_ENDPOINT=oauth2/v2.0/authorize
+OAUTH_TOKEN_ENDPOINT=oauth2/v2.0/token
+DB_USER=MYSQL_USERNAME
+DB_PASS=MYSQL_PASSWORD
+```
+
+## Start
+Make sure port 8081 isn't occupied by another application.
+
+Go to ``meeting-scheduler/server`` and run ``sudo npm run start``. Then pray to your god of choice that it works.
+
+The server should be live at ``localhost:8081``.
