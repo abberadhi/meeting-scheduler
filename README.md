@@ -70,4 +70,4 @@ Make sure port 8081 isn't occupied by another application.
 
 Go to ``meeting-scheduler/server`` and run ``sudo npm run start``. Then pray to your god of choice that it works.
 
-The server should be live at ``localhost:8081``.
+The server will be live at ``localhost:8081``.
