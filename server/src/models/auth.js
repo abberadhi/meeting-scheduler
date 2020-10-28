@@ -2,7 +2,6 @@ var passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 var graph = require('./graph');
 var fs = require('fs');
-const bcrypt = require('bcrypt'); // not used
 const resizeImg = require('resize-img');
 const userModel = require('./database/user');
 const { json } = require('body-parser');
