@@ -6,6 +6,9 @@ The web application is completed with Express.js & Handlebars together with MySQ
 
 This repository is made as a final delivery for the Software Engineering Project course at Blekinge Institute of Technology
 
+![landing page preview](https://media.discordapp.net/attachments/653287425212284958/760590130510692413/JhnZo1s0SV4AAAAASUVORK5CYII.png "Preview")
+
+
 ## Features
 * Microsoft Login with oauth 2.0
 * View your Outlook Calendar on the application.
